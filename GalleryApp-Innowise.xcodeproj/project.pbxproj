@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5359F2DD2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 5359F2DC2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout */; };
+		5359F2DF2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC in Frameworks */ = {isa = PBXBuildFile; productRef = 5359F2DE2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		53B749642E8979CF0010E257 /* GalleryApp-Innowise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GalleryApp-Innowise.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5359F2DF2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC in Frameworks */,
+				5359F2DD2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +75,7 @@
 				53B749602E8979CE0010E257 /* Sources */,
 				53B749612E8979CE0010E257 /* Frameworks */,
 				53B749622E8979CE0010E257 /* Resources */,
+				53B692672E8AD8D0001B901F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -78,6 +86,8 @@
 			);
 			name = "GalleryApp-Innowise";
 			packageProductDependencies = (
+				5359F2DC2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout */,
+				5359F2DE2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC */,
 			);
 			productName = "GalleryApp-Innowise";
 			productReference = 53B749642E8979CF0010E257 /* GalleryApp-Innowise.app */;
@@ -107,6 +117,9 @@
 			);
 			mainGroup = 53B7495B2E8979CE0010E257;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 53B749652E8979CF0010E257 /* Products */;
 			projectDirPath = "";
@@ -127,6 +140,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		53B692672E8AD8D0001B901F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		53B749602E8979CE0010E257 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -146,6 +180,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z373K5B9WV;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GalleryApp-Innowise/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -174,6 +209,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z373K5B9WV;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GalleryApp-Innowise/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -335,6 +371,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chiahsien/CHTCollectionViewWaterfallLayout.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.10;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5359F2DC2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */;
+			productName = CHTCollectionViewWaterfallLayout;
+		};
+		5359F2DE2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */;
+			productName = CHTCollectionViewWaterfallLayoutObjC;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 53B7495C2E8979CE0010E257 /* Project object */;
 }

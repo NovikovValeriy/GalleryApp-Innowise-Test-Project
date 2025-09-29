@@ -12,21 +12,21 @@ protocol FeedCoordinatorProtocol: Coordinator {
 }
 
 class FeedCoordinator: FeedCoordinatorProtocol {
-    
-    var finishDelegate: CoordinatorFinishDelegate? = nil
-    
+
+    var finishDelegate: CoordinatorFinishDelegate?
+
     var navigationController: UINavigationController
-    
+
     var childCoordinators: [Coordinator] = []
-    
+
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
+
     func start() {
         showFeedViewController()
     }
-    
+
     func showFeedViewController() {
         let feedPhotosVC = FeedPhotosViewController()
         navigationController.pushViewController(feedPhotosVC, animated: true)

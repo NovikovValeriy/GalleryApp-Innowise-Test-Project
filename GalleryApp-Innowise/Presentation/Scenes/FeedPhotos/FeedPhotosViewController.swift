@@ -14,5 +14,4 @@ class FeedPhotosViewController: UIViewController {
         view.backgroundColor = .red
     }
 
-
 }
