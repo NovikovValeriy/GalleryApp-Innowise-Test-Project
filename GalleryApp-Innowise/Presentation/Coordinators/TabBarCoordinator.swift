@@ -93,7 +93,9 @@ class TabBarCoordinator: TabCoordinatorProtocol {
             childCoordinators.append(feedCoordinator)
             feedCoordinator.start()
         case .saved:
-            break
+            let savedCoordinator = SavedCoordinator(navController)
+            childCoordinators.append(savedCoordinator)
+            savedCoordinator.start()
         }
 
         return navController
