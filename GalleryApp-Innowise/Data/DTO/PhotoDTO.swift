@@ -14,4 +14,18 @@ struct PhotoDTO: Decodable {
     let alt_description: String?
     let urls: PhotoUrlsDTO
     let user: UserDTO
+    
+    func toDomainModel() -> Photo {
+        Photo(
+            id: id,
+            width: width,
+            height: height,
+            averageColor: color,
+            description: description ?? "",
+            altDescription: alt_description ?? "",
+            thumbnailUrl: urls.thumb,
+            fullUrl: urls.full,
+            author: user.toDomainModel()
+        )
+    }
 }

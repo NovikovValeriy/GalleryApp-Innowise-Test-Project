@@ -8,6 +8,6 @@
 import Foundation
 
 protocol PhotoRepository {
-    func getCuratedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[Photo], Error>) -> Void)
+    func getFeedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[Photo], Error>) -> Void)
     func downloadPhoto(url: String, completion: @escaping (Result<Data, Error>) -> Void)
 }

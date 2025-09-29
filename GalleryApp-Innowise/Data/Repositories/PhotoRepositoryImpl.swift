@@ -8,11 +8,32 @@
 import Foundation
 
 class PhotoRepositoryImpl: PhotoRepository {
-    func getCuratedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[Photo], any Error>) -> Void) {
-        
+    let unsplashAPIDataSource: UnsplashAPIDataSource
+    
+    init(unsplashAPIDataSource: UnsplashAPIDataSource) {
+        self.unsplashAPIDataSource = unsplashAPIDataSource
+    }
+    
+    func getFeedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[Photo], any Error>) -> Void) {
+        self.unsplashAPIDataSource.fetchFeedPhotos(page: page, perPage: perPage) { result in
+            switch result {
+            case .success(let photos):
+                let mappedPhotos = photos.map { $0.toDomainModel() }
+                completion(.success(mappedPhotos))
+            case .failure:
+                return
+            }
+        }
     }
     
     func downloadPhoto(url: String, completion: @escaping (Result<Data, any Error>) -> Void) {
-        
+        self.unsplashAPIDataSource.downloadPhoto(url: url) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure:
+                return
+            }
+        }
     }
 }
