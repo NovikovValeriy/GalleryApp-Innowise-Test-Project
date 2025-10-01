@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5359F2DD2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 5359F2DC2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout */; };
 		5359F2DF2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC in Frameworks */ = {isa = PBXBuildFile; productRef = 5359F2DE2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC */; };
+		5359F3B72E8D728E006C392B /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 5359F3B62E8D728E006C392B /* Swinject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			files = (
 				5359F2DF2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC in Frameworks */,
 				5359F2DD2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout in Frameworks */,
+				5359F3B72E8D728E006C392B /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +90,7 @@
 			packageProductDependencies = (
 				5359F2DC2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayout */,
 				5359F2DE2E8ADF7C006C392B /* CHTCollectionViewWaterfallLayoutObjC */,
+				5359F3B62E8D728E006C392B /* Swinject */,
 			);
 			productName = "GalleryApp-Innowise";
 			productReference = 53B749642E8979CF0010E257 /* GalleryApp-Innowise.app */;
@@ -119,6 +122,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */,
+				5359F3B52E8D728E006C392B /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 53B749652E8979CF0010E257 /* Products */;
@@ -382,6 +386,14 @@
 				minimumVersion = 0.9.10;
 			};
 		};
+		5359F3B52E8D728E006C392B /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -394,6 +406,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5359F2DB2E8ADF7C006C392B /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */;
 			productName = CHTCollectionViewWaterfallLayoutObjC;
+		};
+		5359F3B62E8D728E006C392B /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5359F3B52E8D728E006C392B /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
