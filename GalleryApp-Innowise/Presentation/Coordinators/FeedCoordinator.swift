@@ -28,7 +28,9 @@ class FeedCoordinator: FeedCoordinatorProtocol {
     }
 
     func showFeedViewController() {
-        let feedPhotosVC = FeedPhotosViewController()
+        guard let feedPhotosVC: FeedPhotosViewController = try? DependenciesContainer.shared.inject() else {
+            return
+        }
         navigationController.pushViewController(feedPhotosVC, animated: true)
     }
 }
