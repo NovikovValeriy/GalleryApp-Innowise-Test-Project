@@ -8,7 +8,13 @@
 import UIKit
 import CHTCollectionViewWaterfallLayout
 
+enum WaterfallCollectionViewSections {
+    case main
+}
+
 class FeedPhotosViewController: UIViewController {
+    
+    private var dataSource: UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo>!
 
     // MARK: - UI elements
     
@@ -38,6 +44,23 @@ class FeedPhotosViewController: UIViewController {
     
     private func configureUI() {
         self.collectionViewConfiguration()
+    }
+    
+    // MARK: - Data source
+    
+    private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo> {
+        return UICollectionViewDiffableDataSource(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, model in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier, for: indexPath) as? PhotosWaterfallCollectionViewCell else {
+                return PhotosWaterfallCollectionViewCell()
+            }
+            return cell
+        })
+    }
+    
+    private func updateDatasource() {
+        var snapshot = NSDiffableDataSourceSnapshot<WaterfallCollectionViewSections, Photo>()
+        snapshot.appendSections([.main])
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     // MARK: - ViewController lifecycle

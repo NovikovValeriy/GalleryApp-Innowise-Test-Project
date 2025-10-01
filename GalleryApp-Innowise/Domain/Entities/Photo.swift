@@ -5,7 +5,7 @@
 //  Created by Валерий Новиков on 29.09.25.
 //
 
-struct Photo {
+struct Photo: Hashable {
     let id: String
     let width: Int
     let height: Int
@@ -15,4 +15,12 @@ struct Photo {
     let thumbnailUrl: String?
     let fullUrl: String?
     let author: User
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
