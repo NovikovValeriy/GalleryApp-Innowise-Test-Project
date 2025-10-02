@@ -7,12 +7,12 @@
 
 struct UserDTO: Decodable {
     let id: String
-    let username: String
-    let name: String
-    let first_name: String
-    let last_name: String
-    let profile_image: UserProfileImageLinksDTO
-    let total_photos: Int
+    let username: String?
+    let name: String?
+    let first_name: String?
+    let last_name: String?
+    let profile_image: UserProfileImageLinksDTO?
+    let total_photos: Int?
     
     func toDomainModel() -> User {
         User(
@@ -21,7 +21,7 @@ struct UserDTO: Decodable {
             name: name,
             firstName: first_name,
             lastName: last_name,
-            profileImageSmallUrl: profile_image.small,
+            profileImageSmallUrl: profile_image?.small ?? "",
             totalPhotos: total_photos
         )
     }

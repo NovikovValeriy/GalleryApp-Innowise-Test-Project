@@ -7,14 +7,14 @@
 
 struct Photo: Hashable {
     let id: String
-    let width: Int
-    let height: Int
-    let averageColor: String
+    let width: Int?
+    let height: Int?
+    let averageColor: String?
     let description: String?
     let altDescription: String?
     let thumbnailUrl: String?
     let fullUrl: String?
-    let author: User
+    let author: User?
     
     static func == (lhs: Photo, rhs: Photo) -> Bool {
         lhs.id == rhs.id

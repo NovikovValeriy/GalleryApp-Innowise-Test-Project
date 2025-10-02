@@ -15,6 +15,7 @@ enum WaterfallCollectionViewSections {
 class FeedPhotosViewController: UIViewController {
     
     private var dataSource: UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo>!
+    private let viewModel: FeedPhotosViewModel
 
     // MARK: - UI elements
     
@@ -46,6 +47,12 @@ class FeedPhotosViewController: UIViewController {
         self.collectionViewConfiguration()
     }
     
+    private func bindViewModel() {
+        self.viewModel.onFeedPhotosUpdated = { [weak self] in
+            print(self?.viewModel.photos ?? [])
+        }
+    }
+    
     // MARK: - Data source
     
     private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo> {
@@ -68,6 +75,18 @@ class FeedPhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
+        self.bindViewModel()
+        
+        self.viewModel.getFeedPhotos()
     }
-
+    
+    init(viewModel: FeedPhotosViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }

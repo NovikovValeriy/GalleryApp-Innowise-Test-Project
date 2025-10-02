@@ -6,7 +6,7 @@
 //
 
 struct UserProfileImageLinksDTO: Decodable {
-    let small: String
-    let medium: String
-    let large: String
+    let small: String?
+    let medium: String?
+    let large: String?
 }
