@@ -32,8 +32,8 @@ class FeedPhotosViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = .shortestFirst
-        layout.minimumColumnSpacing = 0
-        layout.minimumInteritemSpacing = 2
+        layout.minimumColumnSpacing = FPValues.columnSpacing
+        layout.minimumInteritemSpacing = FPValues.interitemSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotosWaterfallCollectionViewCell.self, forCellWithReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier)
         collectionView.showsVerticalScrollIndicator = false
