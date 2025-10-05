@@ -43,7 +43,12 @@ class DependenciesContainer {
         container.register(GetFeedPhotosUseCase.self) { r in
             let photoRepository = r.resolve(PhotoRepository.self)!
             return GetFeedPhotosUseCaseImpl(repository: photoRepository)
-        }.inObjectScope(.container)
+        }.inObjectScope(.transient)
+        
+        container.register(DownloadPhotoUseCase.self) { r in
+            let photoRepository = r.resolve(PhotoRepository.self)!
+            return DownloadPhotoUseCaseImpl(repository: photoRepository)
+        }.inObjectScope(.transient)
     }
     
     private func registerViewModelDependencies() {
