@@ -49,17 +49,17 @@ class DependenciesContainer {
         container.register(FeedPhotosViewModel.self) { r in
             let getFeedPhotosUseCase = r.resolve(GetFeedPhotosUseCase.self)!
             return FeedPhotosViewModelImpl(getFeedPhotosUseCase: getFeedPhotosUseCase)
-        }.inObjectScope(.container)
+        }.inObjectScope(.transient)
     }
     
     private func registerViewControllersDependenices() {
         container.register(FeedPhotosViewController.self) { r in
             let viewModel = r.resolve(FeedPhotosViewModel.self)!
             return FeedPhotosViewController(viewModel: viewModel)
-        }
+        }.inObjectScope(.transient)
         
         container.register(SavedPhotosViewController.self) { r in
             return SavedPhotosViewController()
-        }
+        }.inObjectScope(.transient)
     }
 }
