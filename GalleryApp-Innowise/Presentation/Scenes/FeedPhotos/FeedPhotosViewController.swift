@@ -136,3 +136,12 @@ extension FeedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         return CGSize(width: imageWidth, height: cellHeight)
     }
 }
+
+// Collection view delegate
+extension FeedPhotosViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row >= self.viewModel.photos.count - 1 {
+            self.viewModel.getFeedPhotos()
+        }
+    }
+}

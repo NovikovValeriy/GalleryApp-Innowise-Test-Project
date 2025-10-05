@@ -19,6 +19,7 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     private let getFeedPhotosUseCase: GetFeedPhotosUseCase
     
     private(set) var photos: [Photo] = []
+    private var seenPhotosIDs: Set<String> = []
     private var page: Int = 0
     private let perPage: Int = 30
     
@@ -36,7 +37,15 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
             guard let self = self else { return }
             switch result {
             case .success(let feedPhotos):
-                self.photos.append(contentsOf: feedPhotos)
+                let uniquePhotos = feedPhotos.filter { photo in
+                    if self.seenPhotosIDs.contains(photo.id) {
+                        return false
+                    } else {
+                        self.seenPhotosIDs.insert(photo.id)
+                        return true
+                    }
+                }
+                self.photos.append(contentsOf: uniquePhotos)
                 self.page = self.page + 1
                 self.onFeedPhotosUpdated?()
             case .failure:
