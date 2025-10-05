@@ -34,7 +34,8 @@ class DependenciesContainer {
     private func registerRepositoryDependencies() {
         container.register(PhotoRepository.self) { _ in
             let apiDataSource = UnsplashAPIDataSource()
-            return PhotoRepositoryImpl(unsplashAPIDataSource: apiDataSource)
+            let photoCacheDataSource = PhotoCacheDataSource()
+            return PhotoRepositoryImpl(unsplashAPIDataSource: apiDataSource, photoCacheDataCource: photoCacheDataSource)
         }.inObjectScope(.container)
     }
     

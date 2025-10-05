@@ -8,10 +8,12 @@
 import Foundation
 
 class PhotoRepositoryImpl: PhotoRepository {
-    let unsplashAPIDataSource: UnsplashAPIDataSource
+    private let unsplashAPIDataSource: UnsplashAPIDataSource
+    private let photoCacheDataSource: PhotoCacheDataSource
     
-    init(unsplashAPIDataSource: UnsplashAPIDataSource) {
+    init(unsplashAPIDataSource: UnsplashAPIDataSource, photoCacheDataCource: PhotoCacheDataSource) {
         self.unsplashAPIDataSource = unsplashAPIDataSource
+        self.photoCacheDataSource = photoCacheDataCource
     }
     
     func getFeedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[Photo], any Error>) -> Void) {
@@ -27,12 +29,17 @@ class PhotoRepositoryImpl: PhotoRepository {
     }
     
     func downloadPhoto(url: String, completion: @escaping (Result<Data, any Error>) -> Void) {
-        self.unsplashAPIDataSource.downloadPhoto(url: url) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure:
-                return
+        if let data = self.photoCacheDataSource.getImageData(for: url) {
+            completion(.success(data))
+        } else {
+            self.unsplashAPIDataSource.downloadPhoto(url: url) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.photoCacheDataSource.setImageData(data: data, for: url)
+                    completion(.success(data))
+                case .failure:
+                    return
+                }
             }
         }
     }
