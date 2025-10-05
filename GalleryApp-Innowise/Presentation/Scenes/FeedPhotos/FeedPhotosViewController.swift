@@ -144,6 +144,18 @@ extension FeedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
                 
         return CGSize(width: imageWidth, height: cellHeight)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, columnCountFor section: Int) -> Int {
+        guard let layout = collectionViewLayout as? CHTCollectionViewWaterfallLayout else {
+            return 0
+        }
+        if self.view.frame.size.width / self.view.frame.size.height > 2  {
+            layout.columnCount = FPValues.extendedColumnsCount
+        } else {
+            layout.columnCount = FPValues.narrowColumnsCount
+        }
+        return layout.columnCount
+    }
 }
 
 // Collection view delegate

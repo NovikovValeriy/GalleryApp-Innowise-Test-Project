@@ -23,7 +23,7 @@ class DownloadPhotoUseCaseImpl: DownloadPhotoUseCase {
             switch result {
             case .success(let data):
                 completion(.success(data))
-            case .failure(let error):
+            case .failure:
                 break
             }
         }
