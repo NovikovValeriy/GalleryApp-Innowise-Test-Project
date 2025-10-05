@@ -50,6 +50,10 @@ class DependenciesContainer {
             let getFeedPhotosUseCase = r.resolve(GetFeedPhotosUseCase.self)!
             return FeedPhotosViewModelImpl(getFeedPhotosUseCase: getFeedPhotosUseCase)
         }.inObjectScope(.transient)
+        
+        container.register(PhotosWaterfallCollectionViewCellViewModel.self) { r in
+            return PhotosWaterfallCollectionViewCellViewModelImpl()
+        }.inObjectScope(.transient)
     }
     
     private func registerViewControllersDependenices() {

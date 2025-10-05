@@ -19,6 +19,12 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     static let identifier = "PhotosWaterfallCollectionViewCell"
     
+    private var viewModel: PhotosWaterfallCollectionViewCellViewModel?
+    
+    var hasViewModel: Bool {
+        return self.viewModel != nil
+    }
+    
     // MARK: - UI Elements
     
     private let imageBackgroundView: UIView = {
@@ -51,11 +57,6 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         return label
     }()
-    
-    func configure(photo: Photo) {
-        self.label.text = photo.description
-        self.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor ?? "#000000")
-    }
     
     // MARK: - UI Configuration
     
@@ -94,6 +95,37 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         self.labelConfiguration()
     }
     
+    // MARK: - ViewModel configuration
+    
+    private func bindViewModel() {
+        self.viewModel?.onDowloadPhoto = { [weak self] data in
+            DispatchQueue.main.async {
+                self?.imageView.image = UIImage(data: data)
+                self?.imageView.alpha = 0
+                UIView.animate(withDuration: 0.1) {
+                    self?.imageView.alpha = 1
+                }
+            }
+        }
+        
+        self.viewModel?.onPhotoChanged = { [weak self] photo in
+            DispatchQueue.main.async {
+                self?.label.text = photo.altDescription
+                self?.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor ?? "#000000")
+            }
+        }
+    }
+    
+    func configure(with viewModel: PhotosWaterfallCollectionViewCellViewModel? = nil, photo: Photo) {
+        if let viewModel = viewModel {
+            self.viewModel = viewModel
+            self.bindViewModel()
+        }
+        
+        self.viewModel?.photo = photo
+        self.viewModel?.downloadPhoto()
+    }
+    
     // MARK: - Lifecycle methods
     
     override init(frame: CGRect) {
@@ -103,5 +135,10 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
 }

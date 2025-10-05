@@ -74,7 +74,16 @@ class FeedPhotosViewController: UIViewController {
                 return PhotosWaterfallCollectionViewCell()
             }
             
-            cell.configure(photo: self.viewModel.photos[indexPath.row])
+            let photo = self.viewModel.photos[indexPath.row]
+            
+            if cell.hasViewModel {
+                cell.configure(photo: photo)
+            } else {
+                guard let vm: PhotosWaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
+                    return PhotosWaterfallCollectionViewCell()
+                }
+                cell.configure(with: vm, photo: photo)
+            }
             
             return cell
         })
