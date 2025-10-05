@@ -17,6 +17,8 @@ protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
 }
 
 class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionViewCellViewModel {
+    private let downloadPhotoUseCase: DownloadPhotoUseCase
+    
     var photo: Photo? {
         didSet {
             if let photo = photo {
@@ -29,7 +31,22 @@ class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionV
     var onPhotoChanged: ((Photo) -> Void)?
     var onDowloadPhoto: ((Data) -> Void)?
     
+    init(downloadPhotoUseCase: DownloadPhotoUseCase) {
+        self.downloadPhotoUseCase = downloadPhotoUseCase
+    }
+    
     func downloadPhoto() {
-        
+        guard let photo = self.photo else { return }
+        self.photoIdentifier = photo.id
+        let requestedPhotoId = self.photoIdentifier
+        downloadPhotoUseCase.execute(url: photo.thumbnailUrl ?? "") { [weak self] result in
+            guard requestedPhotoId == self?.photoIdentifier else { return }
+            switch result {
+            case .success(let data):
+                self?.onDowloadPhoto?(data)
+            case .failure:
+                return
+            }
+        }
     }
 }
