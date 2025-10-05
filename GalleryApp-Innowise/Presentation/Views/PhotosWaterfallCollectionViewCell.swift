@@ -54,7 +54,7 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     
     func configure(photo: Photo) {
         self.label.text = photo.description
-        self.imageBackgroundView.backgroundColor = .red
+        self.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor ?? "#000000")
     }
     
     // MARK: - UI Configuration
