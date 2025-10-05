@@ -23,7 +23,7 @@ struct PhotoDTO: Decodable {
             averageColor: color,
             description: description,
             altDescription: alt_description,
-            thumbnailUrl: urls?.thumb ?? "",
+            thumbnailUrl: urls?.small ?? "",
             fullUrl: urls?.full ?? "",
             author: user?.toDomainModel()
         )
