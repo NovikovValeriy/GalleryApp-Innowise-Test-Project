@@ -52,6 +52,11 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    func configure(photo: Photo) {
+        self.label.text = photo.description
+        self.imageBackgroundView.backgroundColor = .red
+    }
+    
     // MARK: - UI Configuration
     
     private func imageBackgroundViewConfiguration() {
