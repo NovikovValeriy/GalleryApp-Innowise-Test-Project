@@ -66,6 +66,18 @@ class PhotoDetailsViewController: UIViewController {
         return button
     }()
     
+    private let saveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.backgroundColor = .systemBackground.withAlphaComponent(PDVCValues.buttonBackgroundAlpha)
+        button.tintColor = .label
+        
+        button.layer.cornerRadius = PDVCValues.buttonCornerRadius
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let authorNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: PDVCValues.authorNameLabelFontSize, weight: .semibold)
@@ -91,6 +103,7 @@ class PhotoDetailsViewController: UIViewController {
 
         view.addSubview(imageBackgroundView)
         view.addSubview(backButton)
+        view.addSubview(saveButton)
         view.addSubview(authorNameLabel)
         view.addSubview(descriptionLabel)
     }
@@ -127,6 +140,17 @@ class PhotoDetailsViewController: UIViewController {
         ])
     }
     
+    private func configureSaveButton() {
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            saveButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -PDVCValues.buttonPadding),
+            saveButton.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -PDVCValues.buttonPadding),
+            saveButton.heightAnchor.constraint(equalToConstant: PDVCValues.buttonDimensions),
+            saveButton.widthAnchor.constraint(equalTo: saveButton.heightAnchor),
+        ])
+    }
+    
     private func configureAuthorNameLabel() {
         descriptionLabel.text = viewModel.photo?.altDescription
         NSLayoutConstraint.activate([
@@ -149,7 +173,7 @@ class PhotoDetailsViewController: UIViewController {
         self.viewModel.onBackButtonPressed?()
     }
     
-    @objc private func saveImagePressed() {
+    @objc private func saveButtonPressed() {
         
     }
     
@@ -158,6 +182,7 @@ class PhotoDetailsViewController: UIViewController {
         self.configureBackgroundImageView()
         self.configureImageView()
         self.configureBackButton()
+        self.configureSaveButton()
         self.configureAuthorNameLabel()
         self.configureDescriptionLabel()
     }

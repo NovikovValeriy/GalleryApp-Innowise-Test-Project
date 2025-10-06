@@ -13,6 +13,13 @@ struct PhotosWaterfallCollectionViewCellValues {
     static let labelHeightFromFontMultiplier: CGFloat = 2
     static let labelPaddingFromCornerRadiusMultiplier: CGFloat = 0.25
     static let titlePadding = imageCornerRadius * labelPaddingFromCornerRadiusMultiplier
+    static let heartButtonWidth: CGFloat = 32
+    
+    static var heartButtonPadding: CGFloat {
+        let cornerRadius = imageCornerRadius
+        let iconRadius = heartButtonWidth / 2
+        return cornerRadius - (iconRadius / sqrt(2))
+    }
 }
 
 class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
@@ -58,6 +65,23 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    private let heartView: UIImageView = {
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+        let image = UIImage(systemName: "heart.circle.fill", withConfiguration: config)
+        
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .red
+        imageView.contentMode = .scaleAspectFit
+        
+        let symbolConfig = UIImage.SymbolConfiguration(paletteColors: [.white, .red])
+        imageView.preferredSymbolConfiguration = symbolConfig
+        
+        return imageView
+    }()
+
+
+    
     // MARK: - UI Configuration
     
     private func imageBackgroundViewConfiguration() {
@@ -82,6 +106,17 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    private func savedBadgeViewConfiguration() {
+        contentView.addSubview(heartView)
+
+        NSLayoutConstraint.activate([
+            heartView.widthAnchor.constraint(equalToConstant: PWCVCValues.heartButtonWidth),
+            heartView.heightAnchor.constraint(equalTo: heartView.widthAnchor),
+            heartView.trailingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor, constant: -PWCVCValues.heartButtonPadding),
+            heartView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -PWCVCValues.heartButtonPadding)
+        ])
+    }
+    
     private func labelConfiguration() {
         contentView.addSubview(label)
         NSLayoutConstraint.activate([
@@ -96,6 +131,7 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         self.imageBackgroundViewConfiguration()
         self.imageViewConfiguration()
         self.labelConfiguration()
+        self.savedBadgeViewConfiguration()
     }
     
     @objc func handleTap() {
