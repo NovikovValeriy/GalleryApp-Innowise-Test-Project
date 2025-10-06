@@ -9,10 +9,11 @@ import Foundation
 
 protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
     var photo: Photo? { get set }
+    var photoIndex: Int? { get set }
     var photoIdentifier: String { get }
     var onPhotoChanged: ((Photo) -> Void)? { get set }
     var onDowloadPhoto: ((Data) -> Void)? { get set }
-    var onPhotoPressed: ((Photo) -> Void)? { get set }
+    var onPhotoPressed: ((Int) -> Void)? { get set }
     
     func downloadPhoto()
 }
@@ -27,11 +28,12 @@ class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionV
             }
         }
     }
+    var photoIndex: Int?
     private(set) var photoIdentifier: String = ""
     
     var onPhotoChanged: ((Photo) -> Void)?
     var onDowloadPhoto: ((Data) -> Void)?
-    var onPhotoPressed: ((Photo) -> Void)?
+    var onPhotoPressed: ((Int) -> Void)?
     
     init(downloadPhotoUseCase: DownloadPhotoUseCase) {
         self.downloadPhotoUseCase = downloadPhotoUseCase

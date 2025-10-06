@@ -99,8 +99,8 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func handleTap() {
-        guard let photo = viewModel?.photo else { return }
-        viewModel?.onPhotoPressed?(photo)
+        guard let index = viewModel?.photoIndex else { return }
+        self.viewModel?.onPhotoPressed?(index)
     }
     
     // MARK: - ViewModel configuration
@@ -124,13 +124,14 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(with viewModel: PhotosWaterfallCollectionViewCellViewModel? = nil, photo: Photo) {
+    func configure(with viewModel: PhotosWaterfallCollectionViewCellViewModel? = nil, photo: Photo, index: Int) {
         if let viewModel = viewModel {
             self.viewModel = viewModel
             self.bindViewModel()
         }
         
         self.viewModel?.photo = photo
+        self.viewModel?.photoIndex = index
         self.viewModel?.downloadPhoto()
     }
     

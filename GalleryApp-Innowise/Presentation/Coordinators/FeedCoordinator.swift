@@ -9,11 +9,12 @@ import UIKit
 
 protocol FeedCoordinatorProtocol: Coordinator {
     func showFeedViewController()
+    func showDetailsFlow(photos: [Photo], index: Int)
 }
 
 class FeedCoordinator: FeedCoordinatorProtocol {
 
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
 
     var navigationController: UINavigationController
 
@@ -31,24 +32,26 @@ class FeedCoordinator: FeedCoordinatorProtocol {
         guard let viewModel: FeedPhotosViewModel = try? DependenciesContainer.shared.inject() else {
             return
         }
-        viewModel.onPhotoPressed = { [weak self] photo in
-            self?.showDetailsViewController(for: photo)
+        viewModel.onPhotoPressed = { [weak self, weak viewModel] index in
+            guard let self = self, let viewModel = viewModel else { return }
+            self.showDetailsFlow(photos: viewModel.photos, index: index)
         }
         let feedPhotosVC = FeedPhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(feedPhotosVC, animated: true)
     }
     
-    func showDetailsViewController(for photo: Photo) {
-        guard let vm: PhotoDetailsViewModel = try? DependenciesContainer.shared.inject() else {
-            return
-        }
-        vm.photo = photo
-        
-        vm.onBackButtonPressed = { [weak self] in
-            self?.navigationController.popViewController(animated: true)
-        }
-        
-        let detailsViewController = PhotoDetailsViewController(viewModel: vm)
-        navigationController.pushViewController(detailsViewController, animated: true)
+    func showDetailsFlow(photos: [Photo], index: Int) {
+        let detailsCoordinator = DetailsCoordinator(navigationController)
+        detailsCoordinator.photos = photos
+        detailsCoordinator.currentIndex = index
+        childCoordinators.append(detailsCoordinator)
+        detailsCoordinator.finishDelegate = self
+        detailsCoordinator.start()
+    }
+}
+
+extension FeedCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: any Coordinator) {
+        self.navigationController.popViewController(animated: true)
     }
 }

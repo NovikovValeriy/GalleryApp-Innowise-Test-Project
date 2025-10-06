@@ -11,7 +11,7 @@ protocol FeedPhotosViewModel: AnyObject {
     var photos: [Photo] { get }
     
     var onFeedPhotosUpdated: (() -> Void)? { get set }
-    var onPhotoPressed: ((Photo) -> Void)? { get set }
+    var onPhotoPressed: ((Int) -> Void)? { get set }
     
     func getFeedPhotos()
 }
@@ -26,7 +26,7 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     
     var onFeedPhotosUpdated: (() -> Void)?
     
-    var onPhotoPressed: ((Photo) -> Void)?
+    var onPhotoPressed: ((Int) -> Void)?
     
     init(getFeedPhotosUseCase: GetFeedPhotosUseCase) {
         self.getFeedPhotosUseCase = getFeedPhotosUseCase

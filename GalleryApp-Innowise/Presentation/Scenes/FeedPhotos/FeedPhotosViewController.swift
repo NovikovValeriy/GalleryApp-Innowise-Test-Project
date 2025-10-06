@@ -77,13 +77,13 @@ class FeedPhotosViewController: UIViewController {
             let photo = self.viewModel.photos[indexPath.row]
             
             if cell.hasViewModel {
-                cell.configure(photo: photo)
+                cell.configure(photo: photo, index: indexPath.row)
             } else {
                 guard let vm: PhotosWaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
                     return PhotosWaterfallCollectionViewCell()
                 }
                 vm.onPhotoPressed = self.viewModel.onPhotoPressed
-                cell.configure(with: vm, photo: photo)
+                cell.configure(with: vm, photo: photo, index: indexPath.row)
             }
             
             return cell
