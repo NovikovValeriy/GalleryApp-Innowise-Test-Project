@@ -39,6 +39,16 @@ class FeedCoordinator: FeedCoordinatorProtocol {
     }
     
     func showDetailsViewController(for photo: Photo) {
+        guard let vm: PhotoDetailsViewModel = try? DependenciesContainer.shared.inject() else {
+            return
+        }
+        vm.photo = photo
         
+        vm.onBackButtonPressed = { [weak self] in
+            self?.navigationController.popViewController(animated: true)
+        }
+        
+        let detailsViewController = PhotoDetailsViewController(viewModel: vm)
+        navigationController.pushViewController(detailsViewController, animated: true)
     }
 }

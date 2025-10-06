@@ -60,5 +60,10 @@ class DependenciesContainer {
             let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
             return PhotosWaterfallCollectionViewCellViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
         }.inObjectScope(.transient)
+        
+        container.register(PhotoDetailsViewModel.self) { r in
+            let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
+            return PhotoDetailsViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
+        }.inObjectScope(.transient)
     }
 }
