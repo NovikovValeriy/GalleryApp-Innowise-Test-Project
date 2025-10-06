@@ -8,10 +8,6 @@
 import UIKit
 import CHTCollectionViewWaterfallLayout
 
-enum WaterfallCollectionViewSections {
-    case main
-}
-
 struct FeedPhotosValues {
     static let narrowColumnsCount: Int = 2
     static let extendedColumnsCount: Int = 4
@@ -24,38 +20,40 @@ class FeedPhotosViewController: UIViewController {
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     typealias FPValues = FeedPhotosValues
     
-    private var dataSource: UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo>!
+    private var dataSource: UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo>!
     private let viewModel: FeedPhotosViewModel
 
     // MARK: - UI elements
     
-    private let collectionView: UICollectionView = {
-        let layout = CHTCollectionViewWaterfallLayout()
-        layout.itemRenderDirection = .shortestFirst
-        layout.minimumColumnSpacing = FPValues.columnSpacing
-        layout.minimumInteritemSpacing = FPValues.interitemSpacing
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotosWaterfallCollectionViewCell.self, forCellWithReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier)
-        collectionView.showsVerticalScrollIndicator = false
-        return collectionView
+    private let photosWaterfallView: GAPhotosWaterfallView = {
+        let view = GAPhotosWaterfallView()
+        view.itemRenderDirection = .shortestFirst
+        view.columnSpacing = FPValues.columnSpacing
+        view.interitemSpacing = FPValues.interitemSpacing
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     // MARK: - UI Configuration
     
-    private func collectionViewConfiguration() {
-        collectionView.delegate = self
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+    private func photosWaterfallViewConfiguration() {
+        photosWaterfallView.delegate = self
+        
+        view.addSubview(photosWaterfallView)
+        
+        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            photosWaterfallView.topAnchor.constraint(equalTo: view.topAnchor),
+            photosWaterfallView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            photosWaterfallView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            photosWaterfallView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         ])
+        
+        dataSource = configureDiffableDataSource()
     }
     
     private func configureUI() {
-        self.collectionViewConfiguration()
+        self.photosWaterfallViewConfiguration()
     }
     
     private func bindViewModel() {
@@ -68,9 +66,12 @@ class FeedPhotosViewController: UIViewController {
     
     // MARK: - Data source
     
-    private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<WaterfallCollectionViewSections, Photo> {
-        return UICollectionViewDiffableDataSource(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, model in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier, for: indexPath) as? PhotosWaterfallCollectionViewCell else {
+    private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo> {
+        return UICollectionViewDiffableDataSource(
+            collectionView: self.photosWaterfallView.collectionView,
+            cellProvider: { [weak self] collectionView, indexPath, model in
+            guard let self = self,
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier, for: indexPath) as? PhotosWaterfallCollectionViewCell else {
                 return PhotosWaterfallCollectionViewCell()
             }
             
@@ -91,7 +92,7 @@ class FeedPhotosViewController: UIViewController {
     }
     
     private func updateDatasource() {
-        var snapshot = NSDiffableDataSourceSnapshot<WaterfallCollectionViewSections, Photo>()
+        var snapshot = NSDiffableDataSourceSnapshot<GAWaterfallCollectionViewSections, Photo>()
         snapshot.appendSections([.main])
         snapshot.appendItems(self.viewModel.photos)
         dataSource.apply(snapshot, animatingDifferences: true)
