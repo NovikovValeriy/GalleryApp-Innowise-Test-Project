@@ -40,7 +40,7 @@ class DetailsCoordinator: NSObject, DetailsCoordinatorProtocol {
             self?.finish()
         }
         
-        let detailsPageViewController = PhotoDetailsPageViewController()
+        let detailsPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         detailsPageViewController.dataSource = self
         detailsPageViewController.delegate = self
         let detailsViewController = PhotoDetailsViewController(viewModel: vm)
