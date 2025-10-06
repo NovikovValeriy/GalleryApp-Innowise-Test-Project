@@ -85,7 +85,7 @@ extension DetailsCoordinator: UIPageViewControllerDelegate {
     {
         guard
             let detailVCs = pageViewController.viewControllers as? [PhotoDetailsViewController],
-            let photo = detailVCs[0].viewModel.photo,
+            let photo = detailVCs[0].photo,
             let currIndex = photos.firstIndex(of: photo)
         else { return }
         

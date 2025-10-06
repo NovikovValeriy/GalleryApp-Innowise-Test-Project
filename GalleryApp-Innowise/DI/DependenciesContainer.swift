@@ -65,9 +65,5 @@ class DependenciesContainer {
             let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
             return PhotoDetailsViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
         }.inObjectScope(.transient)
-        
-        container.register(PhotoDetailsPageViewModel.self) { r in
-            return PhotoDetailsPageViewModelImpl()
-        }.inObjectScope(.transient)
     }
 }

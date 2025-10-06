@@ -28,8 +28,11 @@ class PhotoDetailsViewController: UIViewController {
 
     typealias PDVCValues = PhotoDetailsViewControllerValues
     
-//    private let viewModel: PhotoDetailsViewModel
-    let viewModel: PhotoDetailsViewModel
+    private let viewModel: PhotoDetailsViewModel
+    
+    var photo: Photo? {
+        return viewModel.photo
+    }
     
     // MARK: - UI Configuration
     
