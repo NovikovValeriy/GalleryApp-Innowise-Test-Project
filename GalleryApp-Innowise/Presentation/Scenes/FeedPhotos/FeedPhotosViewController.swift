@@ -52,8 +52,15 @@ class FeedPhotosViewController: UIViewController {
         dataSource = configureDiffableDataSource()
     }
     
+    private func navigationBarConfiguration() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Feed photos"
+        navigationItem.largeTitleDisplayMode = .always
+    }
+    
     private func configureUI() {
         self.photosWaterfallViewConfiguration()
+        self.navigationBarConfiguration()
     }
     
     private func bindViewModel() {
@@ -107,6 +114,16 @@ class FeedPhotosViewController: UIViewController {
         dataSource = self.configureDiffableDataSource()
         
         self.viewModel.getFeedPhotos()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     init(viewModel: FeedPhotosViewModel) {
