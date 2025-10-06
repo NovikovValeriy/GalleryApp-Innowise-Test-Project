@@ -16,8 +16,6 @@ protocol PhotoDetailsViewModel: AnyObject {
     func downloadPhoto()
 }
 
-import Foundation
-
 class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     private let downloadPhotoUseCase: DownloadPhotoUseCase
     

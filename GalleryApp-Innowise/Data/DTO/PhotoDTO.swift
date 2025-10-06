@@ -24,7 +24,7 @@ struct PhotoDTO: Decodable {
             description: description,
             altDescription: alt_description,
             thumbnailUrl: urls?.small ?? "",
-            fullUrl: urls?.full ?? "",
+            fullUrl: urls?.regular ?? "",
             author: user?.toDomainModel()
         )
     }
