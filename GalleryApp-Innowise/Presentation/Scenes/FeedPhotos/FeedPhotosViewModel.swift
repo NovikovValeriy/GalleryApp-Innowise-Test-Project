@@ -11,6 +11,7 @@ protocol FeedPhotosViewModel: AnyObject {
     var photos: [Photo] { get }
     
     var onFeedPhotosUpdated: (() -> Void)? { get set }
+    var onPhotoPressed: ((Photo) -> Void)? { get set }
     
     func getFeedPhotos()
 }

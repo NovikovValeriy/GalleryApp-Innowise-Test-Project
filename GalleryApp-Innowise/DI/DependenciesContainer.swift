@@ -28,7 +28,6 @@ class DependenciesContainer {
         self.registerRepositoryDependencies()
         self.registerUseCaseDependencies()
         self.registerViewModelDependencies()
-        self.registerViewControllersDependenices()
     }
     
     private func registerRepositoryDependencies() {
@@ -60,17 +59,6 @@ class DependenciesContainer {
         container.register(PhotosWaterfallCollectionViewCellViewModel.self) { r in
             let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
             return PhotosWaterfallCollectionViewCellViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
-        }.inObjectScope(.transient)
-    }
-    
-    private func registerViewControllersDependenices() {
-        container.register(FeedPhotosViewController.self) { r in
-            let viewModel = r.resolve(FeedPhotosViewModel.self)!
-            return FeedPhotosViewController(viewModel: viewModel)
-        }.inObjectScope(.transient)
-        
-        container.register(SavedPhotosViewController.self) { r in
-            return SavedPhotosViewController()
         }.inObjectScope(.transient)
     }
 }

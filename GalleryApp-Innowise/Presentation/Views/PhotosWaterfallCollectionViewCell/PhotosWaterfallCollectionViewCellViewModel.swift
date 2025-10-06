@@ -12,6 +12,7 @@ protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
     var photoIdentifier: String { get }
     var onPhotoChanged: ((Photo) -> Void)? { get set }
     var onDowloadPhoto: ((Data) -> Void)? { get set }
+    var onPhotoPressed: ((Photo) -> Void)? { get set }
     
     func downloadPhoto()
 }
@@ -30,6 +31,7 @@ class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionV
     
     var onPhotoChanged: ((Photo) -> Void)?
     var onDowloadPhoto: ((Data) -> Void)?
+    var onPhotoPressed: ((Photo) -> Void)?
     
     init(downloadPhotoUseCase: DownloadPhotoUseCase) {
         self.downloadPhotoUseCase = downloadPhotoUseCase

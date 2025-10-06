@@ -28,9 +28,17 @@ class FeedCoordinator: FeedCoordinatorProtocol {
     }
 
     func showFeedViewController() {
-        guard let feedPhotosVC: FeedPhotosViewController = try? DependenciesContainer.shared.inject() else {
+        guard let viewModel: FeedPhotosViewModel = try? DependenciesContainer.shared.inject() else {
             return
         }
+        viewModel.onPhotoPressed = { [weak self] photo in
+            self?.showDetailsViewController(for: photo)
+        }
+        let feedPhotosVC = FeedPhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(feedPhotosVC, animated: true)
+    }
+    
+    func showDetailsViewController(for photo: Photo) {
+        
     }
 }

@@ -70,6 +70,9 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     }
     
     private func imageViewConfiguration() {
+        let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(imageTapGesture)
         imageBackgroundView.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: imageBackgroundView.leadingAnchor),
@@ -93,6 +96,11 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         self.imageBackgroundViewConfiguration()
         self.imageViewConfiguration()
         self.labelConfiguration()
+    }
+    
+    @objc func handleTap() {
+        guard let photo = viewModel?.photo else { return }
+        viewModel?.onPhotoPressed?(photo)
     }
     
     // MARK: - ViewModel configuration

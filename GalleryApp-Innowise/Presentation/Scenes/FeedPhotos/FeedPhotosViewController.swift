@@ -82,6 +82,7 @@ class FeedPhotosViewController: UIViewController {
                 guard let vm: PhotosWaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
                     return PhotosWaterfallCollectionViewCell()
                 }
+                vm.onPhotoPressed = self.viewModel.onPhotoPressed
                 cell.configure(with: vm, photo: photo)
             }
             
