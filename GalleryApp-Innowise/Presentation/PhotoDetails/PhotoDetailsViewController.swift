@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct PhotoDetailsViewControllerValues {
+enum PhotoDetailsViewControllerValues {
     static let imageViewCornerRadius: CGFloat = 20
     
     static let buttonBackgroundAlpha: CGFloat = 0.8

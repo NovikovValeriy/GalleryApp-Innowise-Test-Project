@@ -8,7 +8,7 @@
 import UIKit
 import CHTCollectionViewWaterfallLayout
 
-struct SavedPhotosValues {
+enum SavedPhotosValues {
     static let narrowColumnsCount: Int = 2
     static let extendedColumnsCount: Int = 4
     static let columnSpacing: CGFloat = 5
@@ -164,8 +164,8 @@ extension SavedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         }
         
         let photo = self.viewModel.photos[indexPath.row]
-        var imageHeight = CGFloat(photo.height ?? 100)
-        var imageWidth = CGFloat(photo.width ?? 100)
+        var imageHeight = CGFloat(photo.height)
+        var imageWidth = CGFloat(photo.width)
         
         let viewWidth = self.view.safeAreaLayoutGuide.layoutFrame.size.width
         let columnCount = CGFloat(layout.columnCount)

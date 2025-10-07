@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct PhotosWaterfallCollectionViewCellValues {
+enum PhotosWaterfallCollectionViewCellValues {
     static let imageCornerRadius: CGFloat = 20
     static let labelFontSize: CGFloat = 12
     static let labelHeightFromFontMultiplier: CGFloat = 2
@@ -168,7 +168,7 @@ final class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         self.viewModel?.onPhotoChanged = { [weak self] photo in
             DispatchQueue.main.async {
                 self?.label.text = photo.descriptionText
-                self?.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor ?? "#000000")
+                self?.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor)
             }
         }
     }
