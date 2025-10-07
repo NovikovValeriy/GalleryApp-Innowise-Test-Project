@@ -7,5 +7,4 @@
 
 enum SavedPhotoRepositoryError: Error {
     case database(CoreDataError)
-    case noSavedPhotos
 }
