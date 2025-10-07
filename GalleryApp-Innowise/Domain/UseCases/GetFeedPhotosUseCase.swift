@@ -5,7 +5,7 @@
 //  Created by Валерий Новиков on 29.09.25.
 //
 
-protocol GetFeedPhotosUseCase {
+protocol GetFeedPhotosUseCase: AnyObject {
     func execute(page: Int, perPage: Int, completion: @escaping (Result<[Photo], Error>) -> Void)
 }
 
