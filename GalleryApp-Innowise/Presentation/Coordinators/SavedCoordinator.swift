@@ -28,9 +28,14 @@ class SavedCoordinator: SavedCoordinatorProtocol {
     }
 
     func showSavedViewController() {
-        guard let savedPhotosVC: SavedPhotosViewController = try? DependenciesContainer.shared.inject() else {
+        guard let viewModel: SavedPhotosViewModel = try? DependenciesContainer.shared.inject() else {
             return
         }
+//        viewModel.onPhotoPressed = { [weak self, weak viewModel] index in
+//            guard let self = self, let viewModel = viewModel else { return }
+//            self.showDetailsFlow(photos: viewModel.photos, index: index)
+//        }
+        let savedPhotosVC = SavedPhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(savedPhotosVC, animated: true)
     }
 }
