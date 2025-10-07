@@ -14,6 +14,7 @@ protocol FeedPhotosViewModel: AnyObject {
     var onFeedPhotosUpdated: (() -> Void)? { get set }
     var onPhotoPressed: ((Int) -> Void)? { get set }
     var onSavedPhotosUpdated: (() -> Void)? { get set }
+    var onError: ((String) -> Void)? { get set }
     
     func getFeedPhotos()
     func getSavedPhotos()
@@ -22,6 +23,7 @@ protocol FeedPhotosViewModel: AnyObject {
 class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     private let getFeedPhotosUseCase: GetFeedPhotosUseCase
     private let getSavedPhotosUseCase: GetSavedPhotosUseCase
+    private let errorMapper: ErrorMapper
     
     private(set) var photos: [Photo] = []
     private(set) var savedPhotos: [Photo] = []
@@ -32,10 +34,16 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     var onFeedPhotosUpdated: (() -> Void)?
     var onPhotoPressed: ((Int) -> Void)?
     var onSavedPhotosUpdated: (() -> Void)?
+    var onError: ((String) -> Void)?
     
-    init(getFeedPhotosUseCase: GetFeedPhotosUseCase, getSavedPhotosUseCase: GetSavedPhotosUseCase) {
+    init(
+        getFeedPhotosUseCase: GetFeedPhotosUseCase,
+        getSavedPhotosUseCase: GetSavedPhotosUseCase,
+        errorMapper: ErrorMapper
+    ) {
         self.getFeedPhotosUseCase = getFeedPhotosUseCase
         self.getSavedPhotosUseCase = getSavedPhotosUseCase
+        self.errorMapper = errorMapper
     }
     
     func getFeedPhotos() {
@@ -55,8 +63,9 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
                 self.photos.append(contentsOf: uniquePhotos)
                 self.page = self.page + 1
                 self.onFeedPhotosUpdated?()
-            case .failure:
-                return
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
         }
     }
@@ -68,8 +77,9 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
             case .success(let savedPhotos):
                 self.savedPhotos = savedPhotos
                 self.onSavedPhotosUpdated?()
-            case .failure:
-                return
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
         }
     }

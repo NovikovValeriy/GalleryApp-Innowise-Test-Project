@@ -12,21 +12,24 @@ protocol SavedPhotosViewModel: AnyObject {
     
     var onSavedPhotosUpdated: (() -> Void)? { get set }
     var onPhotoPressed: ((Int) -> Void)? { get set }
+    var onError: ((String) -> Void)? { get set }
     
     func getSavedPhotos()
 }
 
 class SavedPhotosViewModelImpl: SavedPhotosViewModel {
     private let getSavedPhotosUseCase: GetSavedPhotosUseCase
+    private let errorMapper: ErrorMapper
     
     private(set) var photos: [Photo] = []
     
     var onSavedPhotosUpdated: (() -> Void)?
-    
     var onPhotoPressed: ((Int) -> Void)?
+    var onError: ((String) -> Void)?
     
-    init(getSavedPhotosUseCase: GetSavedPhotosUseCase) {
+    init(getSavedPhotosUseCase: GetSavedPhotosUseCase, errorMapper: ErrorMapper) {
         self.getSavedPhotosUseCase = getSavedPhotosUseCase
+        self.errorMapper = errorMapper
     }
     
     func getSavedPhotos() {
@@ -36,8 +39,9 @@ class SavedPhotosViewModelImpl: SavedPhotosViewModel {
             case .success(let savedPhotos):
                 self.photos = savedPhotos
                 self.onSavedPhotosUpdated?()
-            case .failure(_):
-                return
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
         }
     }

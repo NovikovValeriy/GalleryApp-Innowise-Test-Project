@@ -16,6 +16,7 @@ protocol PhotoDetailsViewModel: AnyObject {
     var onPhotoDeleted: (() -> Void)? { get set }
     var onCheckedSaved: (() -> Void)? { get set }
     var onBackButtonPressed: (() -> Void)? { get set }
+    var onError: ((String) -> Void)? { get set }
     
     func downloadPhoto()
     func checkIsPhotoSaved()
@@ -28,6 +29,7 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     private let savePhotoUseCase: SavePhotoUseCase
     private let deletePhotoUseCase: DeletePhotoUseCase
     private let isPhotoSavedUseCase: IsPhotoSavedUseCase
+    private let errorMapper: ErrorMapper
     
     var photo: Photo? {
         didSet {
@@ -45,26 +47,30 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     var onPhotoDeleted: (() -> Void)?
     var onCheckedSaved: (() -> Void)?
     var onBackButtonPressed: (() -> Void)?
+    var onError: ((String) -> Void)?
     
     init(
         downloadPhotoUseCase: DownloadPhotoUseCase,
         savePhotoUseCase: SavePhotoUseCase,
         deletePhotoUseCase: DeletePhotoUseCase,
-        isPhotoSavedUseCase: IsPhotoSavedUseCase
+        isPhotoSavedUseCase: IsPhotoSavedUseCase,
+        errorMapper: ErrorMapper
     ) {
         self.downloadPhotoUseCase = downloadPhotoUseCase
         self.savePhotoUseCase = savePhotoUseCase
         self.deletePhotoUseCase = deletePhotoUseCase
         self.isPhotoSavedUseCase = isPhotoSavedUseCase
+        self.errorMapper = errorMapper
     }
     
     func downloadPhoto() {
         guard let photo = self.photo else { return }
         downloadPhotoUseCase.execute(url: photo.fullUrl ?? "") { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let data):
-                self?.onDownloadPhoto?(data)
-            case .failure:
+                self.onDownloadPhoto?(data)
+            case .failure(_):
                 return
             }
         }
@@ -73,12 +79,14 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     func checkIsPhotoSaved() {
         guard let photo = self.photo else { return }
         isPhotoSavedUseCase.execute(id: photo.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let isSaved):
-                self?.isSaved = isSaved
-                self?.onCheckedSaved?()
-            case .failure:
-                return
+                self.isSaved = isSaved
+                self.onCheckedSaved?()
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
             
         }
@@ -87,12 +95,14 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     func savePhoto() {
         guard let photo = self.photo, self.isSaved == false else { return }
         self.savePhotoUseCase.execute(photo: photo) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
-                self?.isSaved = true
-                self?.onPhotoSaved?()
-            case .failure:
-                return
+                self.isSaved = true
+                self.onPhotoSaved?()
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
         }
     }
@@ -100,12 +110,14 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     func deletePhoto() {
         guard let photo = self.photo, self.isSaved == true else { return }
         self.deletePhotoUseCase.execute(id: photo.id) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
-                self?.isSaved = false
-                self?.onPhotoDeleted?()
-            case .failure:
-                return
+                self.isSaved = false
+                self.onPhotoDeleted?()
+            case .failure(let error):
+                let message = self.errorMapper.map(error)
+                self.onError?(message)
             }
         }
     }

@@ -11,15 +11,18 @@ protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
     var photo: Photo? { get set }
     var photoIndex: Int? { get set }
     var photoIdentifier: String { get }
+    
     var onPhotoChanged: ((Photo) -> Void)? { get set }
     var onDowloadPhoto: ((Data) -> Void)? { get set }
     var onPhotoPressed: ((Int) -> Void)? { get set }
+    var onError: ((String) -> Void)? { get set }
     
     func downloadPhoto()
 }
 
 class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionViewCellViewModel {
     private let downloadPhotoUseCase: DownloadPhotoUseCase
+    private let errorMapper: ErrorMapper
     
     var photo: Photo? {
         didSet {
@@ -34,9 +37,11 @@ class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionV
     var onPhotoChanged: ((Photo) -> Void)?
     var onDowloadPhoto: ((Data) -> Void)?
     var onPhotoPressed: ((Int) -> Void)?
+    var onError: ((String) -> Void)?
     
-    init(downloadPhotoUseCase: DownloadPhotoUseCase) {
+    init(downloadPhotoUseCase: DownloadPhotoUseCase, errorMapper: ErrorMapper) {
         self.downloadPhotoUseCase = downloadPhotoUseCase
+        self.errorMapper = errorMapper
     }
     
     func downloadPhoto() {
@@ -44,11 +49,11 @@ class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionV
         self.photoIdentifier = photo.id
         let requestedPhotoId = self.photoIdentifier
         downloadPhotoUseCase.execute(url: photo.thumbnailUrl ?? "") { [weak self] result in
-            guard requestedPhotoId == self?.photoIdentifier else { return }
+            guard let self = self, requestedPhotoId == self.photoIdentifier else { return }
             switch result {
             case .success(let data):
-                self?.onDowloadPhoto?(data)
-            case .failure:
+                self.onDowloadPhoto?(data)
+            case .failure(_):
                 return
             }
         }
