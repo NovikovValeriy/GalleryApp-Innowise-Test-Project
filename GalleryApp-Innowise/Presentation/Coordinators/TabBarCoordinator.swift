@@ -16,7 +16,7 @@ enum TabBarItem: Int {
         case .feed:
             return "Feed"
         case .saved:
-            return "Saved"
+            return "Favorite"
         }
     }
 
@@ -25,7 +25,7 @@ enum TabBarItem: Int {
         case .feed:
             return "house"
         case .saved:
-            return "bookmark"
+            return "heart"
         }
     }
 
@@ -34,7 +34,7 @@ enum TabBarItem: Int {
         case .feed:
             return "house.fill"
         case .saved:
-            return "bookmark.fill"
+            return "heart.fill"
         }
     }
 }
