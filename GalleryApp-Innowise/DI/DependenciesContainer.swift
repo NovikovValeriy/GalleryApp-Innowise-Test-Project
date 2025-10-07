@@ -88,7 +88,15 @@ class DependenciesContainer {
         
         container.register(PhotoDetailsViewModel.self) { r in
             let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
-            return PhotoDetailsViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
+            let savePhotoUseCase = r.resolve(SavePhotoUseCase.self)!
+            let deletePhotoUseCase = r.resolve(DeletePhotoUseCase.self)!
+            let isPhotoSavedUseCase = r.resolve(IsPhotoSavedUseCase.self)!
+            return PhotoDetailsViewModelImpl(
+                downloadPhotoUseCase: downloadPhotoUseCase,
+                savePhotoUseCase: savePhotoUseCase,
+                deletePhotoUseCase: deletePhotoUseCase,
+                isPhotoSavedUseCase: isPhotoSavedUseCase
+            )
         }.inObjectScope(.transient)
         
         container.register(SavedPhotosViewModel.self) { r in
