@@ -10,10 +10,10 @@ import Foundation
 
 class DependenciesContainer {
     static let shared = DependenciesContainer()
-    private let container = Container()
+    private let assembler: Assembler
     
     func inject<T>() throws -> T {
-        if let container = container.resolve(T.self) {
+        if let container = assembler.resolver.resolve(T.self) {
             return container
         } else {
             throw NSError()
@@ -21,110 +21,11 @@ class DependenciesContainer {
     }
     
     private init() {
-        self.registerDependencies()
-    }
-    
-    private func registerDependencies() {
-        self.registerRepositoryDependencies()
-        self.registerUseCaseDependencies()
-        self.registerViewModelDependencies()
-        self.registerMapperDependencies()
-    }
-    
-    private func registerRepositoryDependencies() {
-        container.register(PhotoRepository.self) { _ in
-            let apiDataSource = UnsplashAPIDataSource()
-            let photoCacheDataSource = PhotoCacheDataSource()
-            return PhotoRepositoryImpl(unsplashAPIDataSource: apiDataSource, photoCacheDataCource: photoCacheDataSource)
-        }.inObjectScope(.container)
-        
-        container.register(SavedPhotoRepository.self) { _ in
-            let stack = CoreDataStack.shared
-            return SavedPhotoRepositoryImpl(stack: stack)
-        }.inObjectScope(.container)
-    }
-    
-    private func registerUseCaseDependencies() {
-        container.register(GetFeedPhotosUseCase.self) { r in
-            let photoRepository = r.resolve(PhotoRepository.self)!
-            return GetFeedPhotosUseCaseImpl(repository: photoRepository)
-        }.inObjectScope(.transient)
-        
-        container.register(DownloadPhotoUseCase.self) { r in
-            let photoRepository = r.resolve(PhotoRepository.self)!
-            return DownloadPhotoUseCaseImpl(repository: photoRepository)
-        }.inObjectScope(.transient)
-        
-        container.register(GetSavedPhotosUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
-            return GetSavedPhotosUseCaseImpl(repository: savedPhotoRepository)
-        }.inObjectScope(.transient)
-        
-        container.register(SavePhotoUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
-            return SavePhotoUseCaseImpl(repository: savedPhotoRepository)
-        }.inObjectScope(.transient)
-        
-        container.register(DeletePhotoUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
-            return DeletePhotoUseCaseImpl(repository: savedPhotoRepository)
-        }.inObjectScope(.transient)
-        
-        container.register(IsPhotoSavedUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
-            return IsPhotoSavedUseCaseImpl(repository: savedPhotoRepository)
-        }.inObjectScope(.transient)
-    }
-    
-    private func registerViewModelDependencies() {
-        container.register(FeedPhotosViewModel.self) { r in
-            let getFeedPhotosUseCase = r.resolve(GetFeedPhotosUseCase.self)!
-            let getSavedPhotosUseCase = r.resolve(GetSavedPhotosUseCase.self)!
-            let errorMapper = r.resolve(ErrorMapper.self)!
-            return FeedPhotosViewModelImpl(
-                getFeedPhotosUseCase: getFeedPhotosUseCase,
-                getSavedPhotosUseCase: getSavedPhotosUseCase,
-                errorMapper: errorMapper
-            )
-        }.inObjectScope(.transient)
-        
-        container.register(PhotosWaterfallCollectionViewCellViewModel.self) { r in
-            let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
-            let errorMapper = r.resolve(ErrorMapper.self)!
-            return PhotosWaterfallCollectionViewCellViewModelImpl(
-                downloadPhotoUseCase: downloadPhotoUseCase,
-                errorMapper: errorMapper
-            )
-        }.inObjectScope(.transient)
-        
-        container.register(PhotoDetailsViewModel.self) { r in
-            let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
-            let savePhotoUseCase = r.resolve(SavePhotoUseCase.self)!
-            let deletePhotoUseCase = r.resolve(DeletePhotoUseCase.self)!
-            let isPhotoSavedUseCase = r.resolve(IsPhotoSavedUseCase.self)!
-            let errorMapper = r.resolve(ErrorMapper.self)!
-            return PhotoDetailsViewModelImpl(
-                downloadPhotoUseCase: downloadPhotoUseCase,
-                savePhotoUseCase: savePhotoUseCase,
-                deletePhotoUseCase: deletePhotoUseCase,
-                isPhotoSavedUseCase: isPhotoSavedUseCase,
-                errorMapper: errorMapper
-            )
-        }.inObjectScope(.transient)
-        
-        container.register(SavedPhotosViewModel.self) { r in
-            let getSavedPhotosUseCase = r.resolve(GetSavedPhotosUseCase.self)!
-            let errorMapper = r.resolve(ErrorMapper.self)!
-            return SavedPhotosViewModelImpl(
-                getSavedPhotosUseCase: getSavedPhotosUseCase,
-                errorMapper: errorMapper
-            )
-        }.inObjectScope(.transient)
-    }
-    
-    private func registerMapperDependencies() {
-        container.register(ErrorMapper.self) { r in
-            return DefaultErrorMapper()
-        }.inObjectScope(.container)
+        self.assembler = Assembler([
+            RepositoryAssembly(),
+            UseCaseAssembly(),
+            MapperAssembly(),
+            ViewModelAssembly()
+        ])
     }
 }
