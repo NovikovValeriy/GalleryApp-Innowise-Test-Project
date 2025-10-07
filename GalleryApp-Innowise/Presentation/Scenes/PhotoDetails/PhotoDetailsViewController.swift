@@ -257,14 +257,33 @@ class PhotoDetailsViewController: UIViewController {
             }
         }
         
-        self.viewModel.onCheckedSaved = { [weak self] isSaved in
+        self.viewModel.onCheckedSaved = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.updateSaveButtonAppearance(isSaved: isSaved)
-                self?.saveButton.isEnabled = true
-                self?.saveButton.isHidden = false
-                self?.saveButton.alpha = 0
+                self.updateSaveButtonAppearance(isSaved: self.viewModel.isSaved)
+                self.saveButton.isEnabled = true
+                self.saveButton.isHidden = false
+                self.saveButton.alpha = 0
                 UIView.animate(withDuration: 0.1) {
-                    self?.saveButton.alpha = 1
+                    self.saveButton.alpha = 1
+                }
+            }
+        }
+        
+        self.viewModel.onPhotoSaved = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.1) {
+                    self.updateSaveButtonAppearance(isSaved: self.viewModel.isSaved)
+                }
+            }
+        }
+        
+        self.viewModel.onPhotoDeleted = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.1) {
+                    self.updateSaveButtonAppearance(isSaved: self.viewModel.isSaved)
                 }
             }
         }
@@ -285,7 +304,10 @@ class PhotoDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.configureUI()
         self.bindViewModel()
-        self.viewModel.checkIsPhotoSaved()
         self.viewModel.downloadPhoto()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.viewModel.checkIsPhotoSaved()
     }
 }
