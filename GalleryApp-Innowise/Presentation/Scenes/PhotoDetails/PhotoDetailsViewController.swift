@@ -227,7 +227,11 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     @objc private func saveButtonPressed() {
-        
+        if self.viewModel.isSaved {
+            self.viewModel.deletePhoto()
+        } else {
+            self.viewModel.savePhoto()
+        }
     }
     
     private func configureUI() {
