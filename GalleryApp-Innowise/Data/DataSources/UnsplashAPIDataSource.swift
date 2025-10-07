@@ -28,7 +28,7 @@ class UnsplashAPIDataSource {
         return request
     }
     
-    func fetchFeedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[PhotoDTO], Error>) -> Void) {
+    func fetchFeedPhotos(page: Int, perPage: Int, completion: @escaping (Result<[PhotoDTO], NetworkError>) -> Void) {
         var comp = self.components
         comp.path = "/photos"
         comp.queryItems = [
@@ -37,7 +37,7 @@ class UnsplashAPIDataSource {
         ]
         
         guard let url = comp.url else {
-            completion(.failure(NSError()));
+            completion(.failure(.invalidURL));
             return
         }
         let req = self.makeURLRequest(url: url)
@@ -45,17 +45,26 @@ class UnsplashAPIDataSource {
         
         let task = self.session.dataTask(with: req) { data, response, error in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.requestFailed(error)))
                 return
             }
             
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NSError()))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                if httpResponse.statusCode == 401 {
+                    completion(.failure(.unauthorized))
+                } else {
+                    completion(.failure(.serverError(statusCode: httpResponse.statusCode)))
+                }
                 return
             }
             
             guard let data = data else {
-                completion(.failure(NSError()))
+                completion(.failure(.noData))
                 return
             }
             
@@ -63,30 +72,28 @@ class UnsplashAPIDataSource {
                 let decodedData = try JSONDecoder().decode([PhotoDTO].self, from: data)
                 completion(.success(decodedData))
             } catch {
-                completion(.failure(NSError()))
+                completion(.failure(.decodingFailed))
             }
         }
         task.resume()
     }
     
-    func downloadPhoto(url: String, completion: @escaping (Result<Data, Error>) -> Void) {
+    func downloadPhoto(url: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url = URL(string: url) else {
-            completion(.failure(NSError()))
+            completion(.failure(.invalidURL))
             return
         }
         
         let task = self.session.downloadTask(with: url) { localURL, response, error in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.requestFailed(error)))
             }
             
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NSError()))
-                return
-            }
-            
-            guard let localURL = localURL else {
-                completion(.failure(NSError()))
+            guard let httpResponse = response as? HTTPURLResponse,
+                    (200...299).contains(httpResponse.statusCode),
+                    let localURL = localURL
+            else {
+                completion(.failure(.invalidResponse))
                 return
             }
             
@@ -94,7 +101,7 @@ class UnsplashAPIDataSource {
                 let data = try Data(contentsOf: localURL)
                 completion(.success(data))
             } catch {
-                completion(.failure(NSError()))
+                completion(.failure(.decodingFailed))
             }
         }
         task.resume()

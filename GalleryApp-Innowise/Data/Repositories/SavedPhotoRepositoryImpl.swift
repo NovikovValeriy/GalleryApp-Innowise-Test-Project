@@ -34,7 +34,7 @@ final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
                 try context.save()
                 completion(.success(()))
             } catch {
-                completion(.failure(error))
+                completion(.failure(SavedPhotoRepositoryError.database(.saveFailed(error))))
             }
         }
     }
@@ -47,13 +47,15 @@ final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
             request.predicate = NSPredicate(format: "id == %@", id)
 
             do {
-                if let entity = try context.fetch(request).first {
-                    context.delete(entity)
-                    try context.save()
+                guard let entity = try context.fetch(request).first else {
+                    completion(.failure(SavedPhotoRepositoryError.database(.objectNotFound)))
+                    return
                 }
+                context.delete(entity)
+                try context.save()
                 completion(.success(()))
             } catch {
-                completion(.failure(error))
+                completion(.failure(SavedPhotoRepositoryError.database(.deleteFailed(error))))
             }
         }
     }
@@ -63,13 +65,12 @@ final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
         let context = stack.backgroundContext()
         context.perform {
             let request = PhotoEntity.fetchRequest()
-
             do {
                 let entities = try context.fetch(request)
                 let photos = entities.map(PhotoEntityMapper.mapToDomain)
                 completion(.success(photos))
             } catch {
-                completion(.failure(error))
+                completion(.failure(SavedPhotoRepositoryError.database(.fetchFailed(error))))
             }
         }
     }
@@ -80,12 +81,11 @@ final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
         context.perform {
             let request = PhotoEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %@", id)
-
             do {
                 let count = try context.count(for: request)
                 completion(.success(count > 0))
             } catch {
-                completion(.failure(error))
+                completion(.failure(SavedPhotoRepositoryError.database(.fetchFailed(error))))
             }
         }
     }

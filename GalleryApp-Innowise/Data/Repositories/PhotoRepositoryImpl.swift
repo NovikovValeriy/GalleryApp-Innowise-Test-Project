@@ -22,8 +22,8 @@ class PhotoRepositoryImpl: PhotoRepository {
             case .success(let photos):
                 let mappedPhotos = photos.map { $0.toDomainModel() }
                 completion(.success(mappedPhotos))
-            case .failure:
-                return
+            case .failure(let networkError):
+                completion(.failure(PhotoRepositoryError.network(networkError)))
             }
         }
     }
@@ -37,8 +37,8 @@ class PhotoRepositoryImpl: PhotoRepository {
                 case .success(let data):
                     self?.photoCacheDataSource.setImageData(data: data, for: url)
                     completion(.success(data))
-                case .failure:
-                    return
+                case .failure(let error):
+                    completion(.failure(PhotoRepositoryError.network(error)))
                 }
             }
         }
