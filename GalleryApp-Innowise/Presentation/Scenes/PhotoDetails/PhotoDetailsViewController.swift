@@ -36,6 +36,19 @@ class PhotoDetailsViewController: UIViewController {
     
     // MARK: - UI Configuration
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    
     private let imageBackgroundView: UIView = {
         let view = UIView()
         
@@ -100,27 +113,46 @@ class PhotoDetailsViewController: UIViewController {
     
     private func configureRootView() {
         view.backgroundColor = .systemBackground
-
-        view.addSubview(imageBackgroundView)
-        view.addSubview(backButton)
-        view.addSubview(saveButton)
-        view.addSubview(authorNameLabel)
-        view.addSubview(descriptionLabel)
+    }
+    
+    private func configureScrollView() {
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func configureContentView() {
+        scrollView.addSubview(contentView)
+        
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+        ])
     }
     
     private func configureBackgroundImageView() {
-        imageBackgroundView.addSubview(imageView)
+        contentView.addSubview(imageBackgroundView)
         imageBackgroundView.backgroundColor = UIColor(hex: self.viewModel.photo?.averageColor ?? "#000000")
         let imageAspectRatio: CGFloat = CGFloat(self.viewModel.photo?.height ?? 100) / CGFloat(self.viewModel.photo?.width ?? 100)
         NSLayoutConstraint.activate([
-            imageBackgroundView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            imageBackgroundView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            imageBackgroundView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageBackgroundView.heightAnchor.constraint(equalTo: imageBackgroundView.widthAnchor, multiplier: imageAspectRatio),
         ])
     }
     
     private func configureImageView() {
+        imageBackgroundView.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: imageBackgroundView.leadingAnchor),
             imageView.topAnchor.constraint(equalTo: imageBackgroundView.topAnchor),
@@ -130,6 +162,7 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func configureBackButton() {
+        view.addSubview(backButton)
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -141,30 +174,36 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func configureSaveButton() {
+        contentView.addSubview(saveButton)
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            saveButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -PDVCValues.buttonPadding),
+            saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.buttonPadding),
             saveButton.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -PDVCValues.buttonPadding),
             saveButton.heightAnchor.constraint(equalToConstant: PDVCValues.buttonDimensions),
             saveButton.widthAnchor.constraint(equalTo: saveButton.heightAnchor),
         ])
     }
     
-    private func configureAuthorNameLabel() {
+    private func configureDescriptionLabel() {
+        contentView.addSubview(descriptionLabel)
         descriptionLabel.text = viewModel.photo?.altDescription
         NSLayoutConstraint.activate([
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: PDVCValues.descriptionLabelHorizontalPadding),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -PDVCValues.descriptionLabelHorizontalPadding),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: PDVCValues.descriptionLabelHorizontalPadding),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.descriptionLabelHorizontalPadding),
             descriptionLabel.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor, constant: PDVCValues.descriptionLabelTopPadding),
+            
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+
         ])
     }
     
-    private func configureDescriptionLabel() {
+    private func configureAuthorNameLabel() {
+        contentView.addSubview(authorNameLabel)
         authorNameLabel.text = self.viewModel.photo?.authorName
         NSLayoutConstraint.activate([
-            authorNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: PDVCValues.authorNameLabelHorizontalPadding),
-            authorNameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -PDVCValues.authorNameLabelHorizontalPadding),
+            authorNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: PDVCValues.authorNameLabelHorizontalPadding),
+            authorNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.authorNameLabelHorizontalPadding),
             authorNameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PDVCValues.authorNameLabelTopPadding),
         ])
     }
@@ -178,6 +217,8 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func configureUI() {
+        self.configureScrollView()
+        self.configureContentView()
         self.configureRootView()
         self.configureBackgroundImageView()
         self.configureImageView()
