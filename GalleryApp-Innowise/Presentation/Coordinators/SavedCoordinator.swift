@@ -38,4 +38,19 @@ class SavedCoordinator: SavedCoordinatorProtocol {
         let savedPhotosVC = SavedPhotosViewController(viewModel: viewModel)
         navigationController.pushViewController(savedPhotosVC, animated: true)
     }
+    
+    func showDetailsFlow(photos: [Photo], index: Int) {
+        let detailsCoordinator = DetailsCoordinator(navigationController)
+        detailsCoordinator.photos = photos
+        detailsCoordinator.currentIndex = index
+        childCoordinators.append(detailsCoordinator)
+        detailsCoordinator.finishDelegate = self
+        detailsCoordinator.start()
+    }
+}
+
+extension SavedCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: any Coordinator) {
+        self.navigationController.popViewController(animated: true)
+    }
 }
