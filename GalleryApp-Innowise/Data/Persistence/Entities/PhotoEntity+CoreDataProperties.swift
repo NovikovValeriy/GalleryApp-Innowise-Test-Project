@@ -19,13 +19,13 @@ extension PhotoEntity {
     @NSManaged public var id: String?
     @NSManaged public var width: Int64
     @NSManaged public var height: Int64
-    @NSManaged public var averageColor: String?
+    @NSManaged public var averageColor: String
     @NSManaged public var descriptionText: String?
     @NSManaged public var altDescription: String?
-    @NSManaged public var thumbnailUrl: String?
-    @NSManaged public var fullUrl: String?
-    @NSManaged public var authorName: String?
-    @NSManaged public var authorUsername: String?
+    @NSManaged public var thumbnailUrl: String
+    @NSManaged public var fullUrl: String
+    @NSManaged public var authorName: String
+    @NSManaged public var authorUsername: String
 
 }
 

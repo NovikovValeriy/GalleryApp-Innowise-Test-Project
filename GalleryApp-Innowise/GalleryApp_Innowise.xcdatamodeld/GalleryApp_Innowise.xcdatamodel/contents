@@ -2,14 +2,14 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="PhotoEntity" representedClassName="PhotoEntity" syncable="YES">
         <attribute name="altDescription" optional="YES" attributeType="String"/>
-        <attribute name="authorName" optional="YES" attributeType="String"/>
-        <attribute name="authorUsername" optional="YES" attributeType="String"/>
-        <attribute name="averageColor" optional="YES" attributeType="String"/>
+        <attribute name="authorName" attributeType="String"/>
+        <attribute name="authorUsername" attributeType="String"/>
+        <attribute name="averageColor" attributeType="String"/>
         <attribute name="descriptionText" optional="YES" attributeType="String"/>
-        <attribute name="fullUrl" optional="YES" attributeType="String"/>
+        <attribute name="fullUrl" attributeType="String"/>
         <attribute name="height" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="thumbnailUrl" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailUrl" attributeType="String"/>
         <attribute name="width" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
 </model>
