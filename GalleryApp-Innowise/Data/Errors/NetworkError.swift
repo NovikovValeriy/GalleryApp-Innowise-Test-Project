@@ -7,9 +7,11 @@
 
 enum NetworkError: Error {
     case invalidURL
-    case noData
-    case decodingFailed
+    case requestFailed(Error)
+    case invalidResponse
     case unauthorized
     case serverError(statusCode: Int)
-    case unknown(Error)
+    case decodingFailed
+    case noData
 }
+
