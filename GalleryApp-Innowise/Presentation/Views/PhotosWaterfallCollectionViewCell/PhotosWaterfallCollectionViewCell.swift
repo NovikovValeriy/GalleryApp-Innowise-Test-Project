@@ -32,6 +32,10 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         return self.viewModel != nil
     }
     
+    var photo: Photo? {
+        return self.viewModel?.photo
+    }
+    
     // MARK: - UI Elements
     
     private let imageBackgroundView: UIView = {
@@ -133,6 +137,14 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         self.imageViewConfiguration()
         self.labelConfiguration()
         self.savedBadgeViewConfiguration()
+    }
+    
+    func showSavedIcon(_ markedAsSaved: Bool) {
+        if markedAsSaved {
+            heartView.isHidden = false
+        } else {
+            heartView.isHidden = true
+        }
     }
     
     @objc func handleTap() {

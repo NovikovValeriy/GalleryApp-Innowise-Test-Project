@@ -9,27 +9,33 @@ import Foundation
 
 protocol FeedPhotosViewModel: AnyObject {
     var photos: [Photo] { get }
+    var savedPhotos: [Photo] { get }
     
     var onFeedPhotosUpdated: (() -> Void)? { get set }
     var onPhotoPressed: ((Int) -> Void)? { get set }
+    var onSavedPhotosUpdated: (() -> Void)? { get set }
     
     func getFeedPhotos()
+    func getSavedPhotos()
 }
 
 class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     private let getFeedPhotosUseCase: GetFeedPhotosUseCase
+    private let getSavedPhotosUseCase: GetSavedPhotosUseCase
     
     private(set) var photos: [Photo] = []
+    private(set) var savedPhotos: [Photo] = []
     private var seenPhotosIDs: Set<String> = []
     private var page: Int = 0
     private let perPage: Int = 30
     
     var onFeedPhotosUpdated: (() -> Void)?
-    
     var onPhotoPressed: ((Int) -> Void)?
+    var onSavedPhotosUpdated: (() -> Void)?
     
-    init(getFeedPhotosUseCase: GetFeedPhotosUseCase) {
+    init(getFeedPhotosUseCase: GetFeedPhotosUseCase, getSavedPhotosUseCase: GetSavedPhotosUseCase) {
         self.getFeedPhotosUseCase = getFeedPhotosUseCase
+        self.getSavedPhotosUseCase = getSavedPhotosUseCase
     }
     
     func getFeedPhotos() {
@@ -49,6 +55,19 @@ class FeedPhotosViewModelImpl: FeedPhotosViewModel {
                 self.photos.append(contentsOf: uniquePhotos)
                 self.page = self.page + 1
                 self.onFeedPhotosUpdated?()
+            case .failure:
+                return
+            }
+        }
+    }
+    
+    func getSavedPhotos() {
+        getSavedPhotosUseCase.execute { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let savedPhotos):
+                self.savedPhotos = savedPhotos
+                self.onSavedPhotosUpdated?()
             case .failure:
                 return
             }

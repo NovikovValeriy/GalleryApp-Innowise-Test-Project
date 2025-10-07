@@ -78,7 +78,8 @@ class DependenciesContainer {
     private func registerViewModelDependencies() {
         container.register(FeedPhotosViewModel.self) { r in
             let getFeedPhotosUseCase = r.resolve(GetFeedPhotosUseCase.self)!
-            return FeedPhotosViewModelImpl(getFeedPhotosUseCase: getFeedPhotosUseCase)
+            let getSavedPhotosUseCase = r.resolve(GetSavedPhotosUseCase.self)!
+            return FeedPhotosViewModelImpl(getFeedPhotosUseCase: getFeedPhotosUseCase, getSavedPhotosUseCase: getSavedPhotosUseCase)
         }.inObjectScope(.transient)
         
         container.register(PhotosWaterfallCollectionViewCellViewModel.self) { r in

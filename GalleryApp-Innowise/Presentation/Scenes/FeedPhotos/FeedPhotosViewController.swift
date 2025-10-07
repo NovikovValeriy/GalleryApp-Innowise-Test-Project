@@ -69,6 +69,17 @@ class FeedPhotosViewController: UIViewController {
                 self?.updateDatasource()
             }
         }
+        
+        self.viewModel.onSavedPhotosUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                guard let cellsToCheck = (self?.photosWaterfallView.collectionView.visibleCells as? [PhotosWaterfallCollectionViewCell]) else { return }
+                for cell in cellsToCheck {
+                    guard let photo = cell.photo else { continue }
+                    let markedAsSaved = self?.viewModel.savedPhotos.firstIndex(of: photo) != nil
+                    cell.showSavedIcon(markedAsSaved)
+                }
+            }
+        }
     }
     
     // MARK: - Data source
@@ -94,6 +105,9 @@ class FeedPhotosViewController: UIViewController {
                 cell.configure(with: vm, photo: photo, index: indexPath.row)
             }
             
+            let markedAsSaved = self.viewModel.savedPhotos.firstIndex(of: photo) != nil
+            cell.showSavedIcon(markedAsSaved)
+                
             return cell
         })
     }
@@ -119,6 +133,7 @@ class FeedPhotosViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        self.viewModel.getSavedPhotos()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
