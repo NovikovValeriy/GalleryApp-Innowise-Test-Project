@@ -11,7 +11,7 @@ import CoreData
 final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
     private let stack: CoreDataStack
 
-    init(stack: CoreDataStack = .shared) {
+    init(stack: CoreDataStack) {
         self.stack = stack
     }
 
