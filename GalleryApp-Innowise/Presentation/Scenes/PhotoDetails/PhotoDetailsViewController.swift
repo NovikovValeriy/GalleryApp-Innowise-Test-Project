@@ -161,7 +161,7 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func configureDescriptionLabel() {
-        authorNameLabel.text = self.viewModel.photo?.author?.name
+        authorNameLabel.text = self.viewModel.photo?.authorName
         NSLayoutConstraint.activate([
             authorNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: PDVCValues.authorNameLabelHorizontalPadding),
             authorNameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -PDVCValues.authorNameLabelHorizontalPadding),

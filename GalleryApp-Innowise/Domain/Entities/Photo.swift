@@ -10,11 +10,12 @@ struct Photo: Hashable {
     let width: Int?
     let height: Int?
     let averageColor: String?
-    let description: String?
+    let descriptionText: String?
     let altDescription: String?
     let thumbnailUrl: String?
     let fullUrl: String?
-    let author: User?
+    let authorName: String?
+    let authorUsername: String?
     
     static func == (lhs: Photo, rhs: Photo) -> Bool {
         lhs.id == rhs.id

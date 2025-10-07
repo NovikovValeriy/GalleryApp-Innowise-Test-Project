@@ -18,14 +18,15 @@ struct PhotoDTO: Decodable {
     func toDomainModel() -> Photo {
         Photo(
             id: id,
-            width: width,
-            height: height,
-            averageColor: color,
-            description: description,
+            width: width ?? 100,
+            height: height ?? 100,
+            averageColor: color ?? "#000000",
+            descriptionText: description,
             altDescription: alt_description,
             thumbnailUrl: urls?.small ?? "",
             fullUrl: urls?.regular ?? "",
-            author: user?.toDomainModel()
+            authorName: user?.name ?? "",
+            authorUsername: user?.username ?? ""
         )
     }
 }

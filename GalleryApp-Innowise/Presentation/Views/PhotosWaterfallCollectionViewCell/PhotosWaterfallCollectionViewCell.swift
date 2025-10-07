@@ -155,7 +155,7 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         
         self.viewModel?.onPhotoChanged = { [weak self] photo in
             DispatchQueue.main.async {
-                self?.label.text = photo.description
+                self?.label.text = photo.descriptionText
                 self?.imageBackgroundView.backgroundColor = UIColor(hex: photo.averageColor ?? "#000000")
             }
         }
