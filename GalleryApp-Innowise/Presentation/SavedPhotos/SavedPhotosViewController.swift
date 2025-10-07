@@ -34,22 +34,40 @@ final class SavedPhotosViewController: UIViewController {
         return view
     }()
     
+    private let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "You have no saved photos yet."
+        label.textAlignment = .center
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
+    
     // MARK: - UI Configuration
     
     private func photosWaterfallViewConfiguration() {
         photosWaterfallView.delegate = self
-        
         view.addSubview(photosWaterfallView)
-        
-        
         NSLayoutConstraint.activate([
             photosWaterfallView.topAnchor.constraint(equalTo: view.topAnchor),
             photosWaterfallView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             photosWaterfallView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photosWaterfallView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         ])
-        
         dataSource = configureDiffableDataSource()
+    }
+    
+    private func emptyStateLabelConfiguration() {
+        view.addSubview(emptyStateLabel)
+        NSLayoutConstraint.activate([
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            emptyStateLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            emptyStateLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
     
     private func navigationBarConfiguration() {
@@ -60,13 +78,18 @@ final class SavedPhotosViewController: UIViewController {
     
     private func configureUI() {
         self.photosWaterfallViewConfiguration()
+        self.emptyStateLabelConfiguration()
         self.navigationBarConfiguration()
     }
     
     private func bindViewModel() {
         self.viewModel.onSavedPhotosUpdated = { [weak self] in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.updateDatasource()
+                self.updateDatasource()
+                let isEmpty = self.viewModel.photos.isEmpty
+                self.emptyStateLabel.isHidden = !isEmpty
+                self.photosWaterfallView.isHidden = isEmpty
             }
         }
         
