@@ -214,7 +214,7 @@ class PhotoDetailsViewController: UIViewController {
         if isSaved {
             let filledHeart = UIImage(systemName: "heart.fill")
             saveButton.setImage(filledHeart, for: .normal)
-            saveButton.tintColor = .systemRed
+            saveButton.tintColor = .red
         } else {
             let emptyHeart = UIImage(systemName: "heart")
             saveButton.setImage(emptyHeart, for: .normal)
@@ -287,6 +287,18 @@ class PhotoDetailsViewController: UIViewController {
                 }
             }
         }
+        
+        self.viewModel.onError = { [weak self] message in
+            DispatchQueue.main.async {
+                self?.showErrorAlert(message)
+            }
+        }
+    }
+    
+    private func showErrorAlert(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     // MARK: - Lifecycle methods

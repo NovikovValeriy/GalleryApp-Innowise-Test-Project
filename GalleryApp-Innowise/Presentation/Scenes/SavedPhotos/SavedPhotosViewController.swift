@@ -69,6 +69,18 @@ class SavedPhotosViewController: UIViewController {
                 self?.updateDatasource()
             }
         }
+        
+        self.viewModel.onError = { [weak self] message in
+            DispatchQueue.main.async {
+                self?.showErrorAlert(message)
+            }
+        }
+    }
+    
+    private func showErrorAlert(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     // MARK: - Data source
@@ -91,6 +103,7 @@ class SavedPhotosViewController: UIViewController {
                     return PhotosWaterfallCollectionViewCell()
                 }
                 vm.onPhotoPressed = self.viewModel.onPhotoPressed
+                vm.onError = self.viewModel.onError
                 cell.configure(with: vm, photo: photo, index: indexPath.row)
             }
             
