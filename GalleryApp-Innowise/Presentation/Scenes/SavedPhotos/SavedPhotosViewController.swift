@@ -112,18 +112,21 @@ class SavedPhotosViewController: UIViewController {
         self.configureUI()
         self.bindViewModel()
         dataSource = self.configureDiffableDataSource()
-        
-        self.viewModel.getSavedPhotos()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        self.viewModel.getSavedPhotos()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     init(viewModel: SavedPhotosViewModel) {
