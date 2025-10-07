@@ -44,8 +44,6 @@ final class DefaultErrorMapper: ErrorMapper {
             case .objectNotFound:
                 return "Photo was not found."
             }
-        case .noSavedPhotos:
-            return "No saved photos."
         }
     }
     
