@@ -108,6 +108,7 @@ class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     
     private func savedBadgeViewConfiguration() {
         contentView.addSubview(heartView)
+        heartView.isHidden = true
 
         NSLayoutConstraint.activate([
             heartView.widthAnchor.constraint(equalToConstant: PWCVCValues.heartButtonWidth),
