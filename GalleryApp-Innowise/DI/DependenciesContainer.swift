@@ -36,6 +36,11 @@ class DependenciesContainer {
             let photoCacheDataSource = PhotoCacheDataSource()
             return PhotoRepositoryImpl(unsplashAPIDataSource: apiDataSource, photoCacheDataCource: photoCacheDataSource)
         }.inObjectScope(.container)
+        
+        container.register(SavedPhotoRepository.self) { _ in
+            let stack = CoreDataStack.shared
+            return SavedPhotoRepositoryImpl(stack: stack)
+        }.inObjectScope(.container)
     }
     
     private func registerUseCaseDependencies() {
@@ -47,6 +52,26 @@ class DependenciesContainer {
         container.register(DownloadPhotoUseCase.self) { r in
             let photoRepository = r.resolve(PhotoRepository.self)!
             return DownloadPhotoUseCaseImpl(repository: photoRepository)
+        }.inObjectScope(.transient)
+        
+        container.register(GetSavedPhotosUseCase.self) { r in
+            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+            return GetSavedPhotosUseCaseImpl(repository: savedPhotoRepository)
+        }.inObjectScope(.transient)
+        
+        container.register(SavePhotoUseCase.self) { r in
+            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+            return SavePhotoUseCaseImpl(repository: savedPhotoRepository)
+        }.inObjectScope(.transient)
+        
+        container.register(DeletePhotoUseCase.self) { r in
+            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+            return DeletePhotoUseCaseImpl(repository: savedPhotoRepository)
+        }.inObjectScope(.transient)
+        
+        container.register(IsPhotoSavedUseCase.self) { r in
+            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+            return IsPhotoSavedUseCaseImpl(repository: savedPhotoRepository)
         }.inObjectScope(.transient)
     }
     
@@ -65,5 +90,10 @@ class DependenciesContainer {
             let downloadPhotoUseCase = r.resolve(DownloadPhotoUseCase.self)!
             return PhotoDetailsViewModelImpl(downloadPhotoUseCase: downloadPhotoUseCase)
         }.inObjectScope(.transient)
+        
+        container.register(SavedPhotosViewModel.self) { r in
+            let getSavedPhotosUseCase = r.resolve(GetSavedPhotosUseCase.self)!
+            return SavedPhotosViewModelImpl(getSavedPhotosUseCase: getSavedPhotosUseCase)
+        }
     }
 }
