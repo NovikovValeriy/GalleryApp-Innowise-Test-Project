@@ -176,6 +176,8 @@ class PhotoDetailsViewController: UIViewController {
     private func configureSaveButton() {
         contentView.addSubview(saveButton)
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        saveButton.isEnabled = false
+        saveButton.isHidden = true
         
         NSLayoutConstraint.activate([
             saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.buttonPadding),
@@ -208,6 +210,18 @@ class PhotoDetailsViewController: UIViewController {
         ])
     }
     
+    private func updateSaveButtonAppearance(isSaved: Bool) {
+        if isSaved {
+            let filledHeart = UIImage(systemName: "heart.fill")
+            saveButton.setImage(filledHeart, for: .normal)
+            saveButton.tintColor = .systemRed
+        } else {
+            let emptyHeart = UIImage(systemName: "heart")
+            saveButton.setImage(emptyHeart, for: .normal)
+            saveButton.tintColor = .label
+        }
+    }
+    
     @objc private func backButtonPressed() {
         self.viewModel.onBackButtonPressed?()
     }
@@ -238,6 +252,18 @@ class PhotoDetailsViewController: UIViewController {
                 }
             }
         }
+        
+        self.viewModel.onCheckedSaved = { [weak self] isSaved in
+            DispatchQueue.main.async {
+                self?.updateSaveButtonAppearance(isSaved: isSaved)
+                self?.saveButton.isEnabled = true
+                self?.saveButton.isHidden = false
+                self?.saveButton.alpha = 0
+                UIView.animate(withDuration: 0.1) {
+                    self?.saveButton.alpha = 1
+                }
+            }
+        }
     }
     
     // MARK: - Lifecycle methods
@@ -255,6 +281,7 @@ class PhotoDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.configureUI()
         self.bindViewModel()
+        self.viewModel.checkIsPhotoSaved()
         self.viewModel.downloadPhoto()
     }
 }
