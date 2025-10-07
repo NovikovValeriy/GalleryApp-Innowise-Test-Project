@@ -34,7 +34,7 @@ class SavedPhotosViewModelImpl: SavedPhotosViewModel {
             guard let self = self else { return }
             switch result {
             case .success(let savedPhotos):
-                self.photos.append(contentsOf: savedPhotos)
+                self.photos = savedPhotos
                 self.onSavedPhotosUpdated?()
             case .failure(_):
                 return
