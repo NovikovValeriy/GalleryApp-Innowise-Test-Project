@@ -9,11 +9,12 @@ import Foundation
 
 protocol PhotoDetailsViewModel: AnyObject {
     var photo: Photo? { get set }
+    var isSaved: Bool { get }
     var onDownloadPhoto: ((Data) -> Void)? { get set }
     var onPhotoChanged: ((Photo) -> Void)? { get set }
     var onPhotoSaved: (() -> Void)? { get set }
     var onPhotoDeleted: (() -> Void)? { get set }
-    var onCheckedSaved: ((Bool) -> Void)? { get set }
+    var onCheckedSaved: (() -> Void)? { get set }
     var onBackButtonPressed: (() -> Void)? { get set }
     
     func downloadPhoto()
@@ -36,11 +37,13 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
         }
     }
     
+    var isSaved: Bool = false
+    
     var onDownloadPhoto: ((Data) -> Void)?
     var onPhotoChanged: ((Photo) -> Void)?
     var onPhotoSaved: (() -> Void)?
     var onPhotoDeleted: (() -> Void)?
-    var onCheckedSaved: ((Bool) -> Void)?
+    var onCheckedSaved: (() -> Void)?
     var onBackButtonPressed: (() -> Void)?
     
     init(
@@ -56,7 +59,8 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     }
     
     func downloadPhoto() {
-        downloadPhotoUseCase.execute(url: photo?.fullUrl ?? "") { [weak self] result in
+        guard let photo = self.photo else { return }
+        downloadPhotoUseCase.execute(url: photo.fullUrl ?? "") { [weak self] result in
             switch result {
             case .success(let data):
                 self?.onDownloadPhoto?(data)
@@ -67,10 +71,12 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     }
     
     func checkIsPhotoSaved() {
-        isPhotoSavedUseCase.execute(id: photo?.id ?? "") { [weak self] result in
+        guard let photo = self.photo else { return }
+        isPhotoSavedUseCase.execute(id: photo.id) { [weak self] result in
             switch result {
             case .success(let isSaved):
-                self?.onCheckedSaved?(isSaved)
+                self?.isSaved = isSaved
+                self?.onCheckedSaved?()
             case .failure:
                 return
             }
@@ -79,10 +85,28 @@ class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     }
     
     func savePhoto() {
-        
+        guard let photo = self.photo, self.isSaved == false else { return }
+        self.savePhotoUseCase.execute(photo: photo) { [weak self] result in
+            switch result {
+            case .success:
+                self?.isSaved = true
+                self?.onPhotoSaved?()
+            case .failure:
+                return
+            }
+        }
     }
     
     func deletePhoto() {
-        
+        guard let photo = self.photo, self.isSaved == true else { return }
+        self.deletePhotoUseCase.execute(id: photo.id) { [weak self] result in
+            switch result {
+            case .success:
+                self?.isSaved = false
+                self?.onPhotoDeleted?()
+            case .failure:
+                return
+            }
+        }
     }
 }
