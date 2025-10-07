@@ -15,7 +15,7 @@ struct SavedPhotosValues {
     static let interitemSpacing: CGFloat = 5
 }
 
-class SavedPhotosViewController: UIViewController {
+final class SavedPhotosViewController: UIViewController {
     
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     typealias SPValues = SavedPhotosValues

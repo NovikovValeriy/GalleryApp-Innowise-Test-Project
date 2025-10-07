@@ -12,7 +12,7 @@ protocol FeedCoordinatorProtocol: Coordinator {
     func showDetailsFlow(photos: [Photo], index: Int)
 }
 
-class FeedCoordinator: FeedCoordinatorProtocol {
+final class FeedCoordinator: FeedCoordinatorProtocol {
 
     weak var finishDelegate: CoordinatorFinishDelegate?
 

@@ -9,7 +9,7 @@ protocol DeletePhotoUseCase: AnyObject {
     func execute(id: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
-class DeletePhotoUseCaseImpl: DeletePhotoUseCase {
+final class DeletePhotoUseCaseImpl: DeletePhotoUseCase {
     private let repository: SavedPhotoRepository
     init(repository: SavedPhotoRepository) {
         self.repository = repository

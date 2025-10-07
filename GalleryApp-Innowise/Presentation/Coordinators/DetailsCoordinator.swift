@@ -11,7 +11,7 @@ protocol DetailsCoordinatorProtocol: Coordinator {
     func showDetailsViewController()
 }
 
-class DetailsCoordinator: NSObject, DetailsCoordinatorProtocol {
+final class DetailsCoordinator: NSObject, DetailsCoordinatorProtocol {
 
     var finishDelegate: CoordinatorFinishDelegate?
 

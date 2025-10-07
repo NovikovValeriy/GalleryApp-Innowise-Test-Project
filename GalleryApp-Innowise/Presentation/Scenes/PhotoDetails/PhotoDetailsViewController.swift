@@ -24,7 +24,7 @@ struct PhotoDetailsViewControllerValues {
     static let descriptionLabelTopPadding: CGFloat = 5
 }
 
-class PhotoDetailsViewController: UIViewController {
+final class PhotoDetailsViewController: UIViewController {
 
     typealias PDVCValues = PhotoDetailsViewControllerValues
     

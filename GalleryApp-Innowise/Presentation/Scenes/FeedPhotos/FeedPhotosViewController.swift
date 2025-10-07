@@ -15,7 +15,7 @@ struct FeedPhotosValues {
     static let interitemSpacing: CGFloat = 5
 }
 
-class FeedPhotosViewController: UIViewController {
+final class FeedPhotosViewController: UIViewController {
     
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     typealias FPValues = FeedPhotosValues

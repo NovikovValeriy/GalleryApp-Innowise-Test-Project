@@ -8,7 +8,7 @@
 import Swinject
 import Foundation
 
-class DependenciesContainer {
+final class DependenciesContainer {
     static let shared = DependenciesContainer()
     private let assembler: Assembler
     

@@ -11,7 +11,7 @@ protocol SavedCoordinatorProtocol: Coordinator {
     func showSavedViewController()
 }
 
-class SavedCoordinator: SavedCoordinatorProtocol {
+final class SavedCoordinator: SavedCoordinatorProtocol {
 
     var finishDelegate: CoordinatorFinishDelegate?
 

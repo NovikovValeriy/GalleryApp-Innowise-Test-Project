@@ -9,7 +9,7 @@ protocol GetFeedPhotosUseCase: AnyObject {
     func execute(page: Int, perPage: Int, completion: @escaping (Result<[Photo], Error>) -> Void)
 }
 
-class GetFeedPhotosUseCaseImpl: GetFeedPhotosUseCase {
+final class GetFeedPhotosUseCaseImpl: GetFeedPhotosUseCase {
 
     private let repository: PhotoRepository
 

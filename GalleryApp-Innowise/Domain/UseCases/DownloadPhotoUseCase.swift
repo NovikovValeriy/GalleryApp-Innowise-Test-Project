@@ -11,7 +11,7 @@ protocol DownloadPhotoUseCase: AnyObject {
     func execute(url: String, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
-class DownloadPhotoUseCaseImpl: DownloadPhotoUseCase {
+final class DownloadPhotoUseCaseImpl: DownloadPhotoUseCase {
     private let repository: PhotoRepository
     
     init(repository: PhotoRepository) {

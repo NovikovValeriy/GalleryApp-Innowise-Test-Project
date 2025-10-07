@@ -7,7 +7,7 @@
 
 import Foundation
 
-class UnsplashAPIDataSource {
+final class UnsplashAPIDataSource {
     
     private let session: URLSession = {
         let sessionConfig = URLSessionConfiguration.default

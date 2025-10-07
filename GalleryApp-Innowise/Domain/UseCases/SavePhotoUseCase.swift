@@ -9,7 +9,7 @@ protocol SavePhotoUseCase: AnyObject {
     func execute(photo: Photo, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
-class SavePhotoUseCaseImpl: SavePhotoUseCase {
+final class SavePhotoUseCaseImpl: SavePhotoUseCase {
 
     private let repository: SavedPhotoRepository
     init(repository: SavedPhotoRepository) {

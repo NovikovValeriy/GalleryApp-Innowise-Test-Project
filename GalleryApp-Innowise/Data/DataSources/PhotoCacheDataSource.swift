@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PhotoCacheDataSource {
+final class PhotoCacheDataSource {
     private let imageCache: NSCache<NSString, NSData> = NSCache<NSString, NSData>()
     
     func getImageData(for url: String) -> Data? {

@@ -22,7 +22,7 @@ struct PhotosWaterfallCollectionViewCellValues {
     }
 }
 
-class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
+final class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     static let identifier = "PhotosWaterfallCollectionViewCell"
     

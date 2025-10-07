@@ -13,7 +13,7 @@ enum GAWaterfallCollectionViewSections: Int {
     case main
 }
 
-class GAPhotosWaterfallView: UIView {
+final class GAPhotosWaterfallView: UIView {
 
     weak var delegate: CHTCollectionViewDelegateWaterfallLayout? {
         didSet {

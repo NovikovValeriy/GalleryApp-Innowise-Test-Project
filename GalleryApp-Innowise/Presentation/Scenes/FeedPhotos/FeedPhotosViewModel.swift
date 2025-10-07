@@ -20,7 +20,7 @@ protocol FeedPhotosViewModel: AnyObject {
     func getSavedPhotos()
 }
 
-class FeedPhotosViewModelImpl: FeedPhotosViewModel {
+final class FeedPhotosViewModelImpl: FeedPhotosViewModel {
     private let getFeedPhotosUseCase: GetFeedPhotosUseCase
     private let getSavedPhotosUseCase: GetSavedPhotosUseCase
     private let errorMapper: ErrorMapper

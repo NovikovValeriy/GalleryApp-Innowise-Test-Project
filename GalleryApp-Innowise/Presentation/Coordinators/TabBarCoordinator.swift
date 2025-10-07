@@ -43,7 +43,7 @@ protocol TabCoordinatorProtocol: Coordinator {
     var tabBarController: UITabBarController { get set }
 }
 
-class TabBarCoordinator: TabCoordinatorProtocol {
+final class TabBarCoordinator: TabCoordinatorProtocol {
     var tabBarController: UITabBarController
 
     var finishDelegate: CoordinatorFinishDelegate?

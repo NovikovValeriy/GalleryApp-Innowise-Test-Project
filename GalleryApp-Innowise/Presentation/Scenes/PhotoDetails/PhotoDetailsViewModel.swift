@@ -24,7 +24,7 @@ protocol PhotoDetailsViewModel: AnyObject {
     func deletePhoto()
 }
 
-class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
+final class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     private let downloadPhotoUseCase: DownloadPhotoUseCase
     private let savePhotoUseCase: SavePhotoUseCase
     private let deletePhotoUseCase: DeletePhotoUseCase

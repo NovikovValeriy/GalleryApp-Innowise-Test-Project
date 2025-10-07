@@ -17,7 +17,7 @@ protocol SavedPhotosViewModel: AnyObject {
     func getSavedPhotos()
 }
 
-class SavedPhotosViewModelImpl: SavedPhotosViewModel {
+final class SavedPhotosViewModelImpl: SavedPhotosViewModel {
     private let getSavedPhotosUseCase: GetSavedPhotosUseCase
     private let errorMapper: ErrorMapper
     
