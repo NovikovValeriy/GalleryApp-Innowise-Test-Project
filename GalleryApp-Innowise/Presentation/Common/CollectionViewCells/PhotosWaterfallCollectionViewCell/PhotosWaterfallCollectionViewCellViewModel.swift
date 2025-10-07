@@ -48,7 +48,7 @@ final class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallColle
         guard let photo = self.photo else { return }
         self.photoIdentifier = photo.id
         let requestedPhotoId = self.photoIdentifier
-        downloadPhotoUseCase.execute(url: photo.thumbnailUrl ?? "") { [weak self] result in
+        downloadPhotoUseCase.execute(url: photo.thumbnailUrl) { [weak self] result in
             guard let self = self, requestedPhotoId == self.photoIdentifier else { return }
             switch result {
             case .success(let data):

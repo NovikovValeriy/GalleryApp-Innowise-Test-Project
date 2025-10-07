@@ -65,7 +65,7 @@ final class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
     
     func downloadPhoto() {
         guard let photo = self.photo else { return }
-        downloadPhotoUseCase.execute(url: photo.fullUrl ?? "") { [weak self] result in
+        downloadPhotoUseCase.execute(url: photo.fullUrl) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let data):

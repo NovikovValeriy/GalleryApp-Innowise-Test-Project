@@ -20,8 +20,8 @@ final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
         context.perform {
             let entity = PhotoEntity(context: context)
             entity.id = photo.id
-            entity.width = Int64(photo.width ?? 0)
-            entity.height = Int64(photo.height ?? 0)
+            entity.width = Int64(photo.width)
+            entity.height = Int64(photo.height)
             entity.averageColor = photo.averageColor
             entity.descriptionText = photo.descriptionText
             entity.altDescription = photo.altDescription
