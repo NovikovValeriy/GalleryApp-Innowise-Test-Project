@@ -18,13 +18,6 @@ class GetFeedPhotosUseCaseImpl: GetFeedPhotosUseCase {
     }
 
     func execute(page: Int, perPage: Int, completion: @escaping (Result<[Photo], Error>) -> Void) {
-        repository.getFeedPhotos(page: page, perPage: perPage) { result in
-            switch result {
-            case .success(let photos):
-                completion(.success(photos))
-            case .failure:
-                break
-            }
-        }
+        repository.getFeedPhotos(page: page, perPage: perPage, completion: completion)
     }
 }

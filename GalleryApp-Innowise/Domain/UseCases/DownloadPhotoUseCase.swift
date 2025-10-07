@@ -19,13 +19,6 @@ class DownloadPhotoUseCaseImpl: DownloadPhotoUseCase {
     }
     
     func execute(url: String, completion: @escaping (Result<Data, Error>) -> Void) {
-       repository.downloadPhoto(url: url) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure:
-                break
-            }
-        }
+        repository.downloadPhoto(url: url, completion: completion)
     }
 }
