@@ -21,21 +21,21 @@ extension UIColor {
         let length = hexSanitized.count
         switch length {
         case 3: // RGB
-            let r = CGFloat((rgb >> 8) & 0xF) / 15.0
-            let g = CGFloat((rgb >> 4) & 0xF) / 15.0
-            let b = CGFloat(rgb & 0xF) / 15.0
-            self.init(red: r, green: g, blue: b, alpha: alpha)
+            let red = CGFloat((rgb >> 8) & 0xF) / 15.0
+            let green = CGFloat((rgb >> 4) & 0xF) / 15.0
+            let blue = CGFloat(rgb & 0xF) / 15.0
+            self.init(red: red, green: green, blue: blue, alpha: alpha)
         case 6: // RRGGBB
-            let r = CGFloat((rgb >> 16) & 0xFF) / 255.0
-            let g = CGFloat((rgb >> 8) & 0xFF) / 255.0
-            let b = CGFloat(rgb & 0xFF) / 255.0
-            self.init(red: r, green: g, blue: b, alpha: alpha)
+            let red = CGFloat((rgb >> 16) & 0xFF) / 255.0
+            let green = CGFloat((rgb >> 8) & 0xFF) / 255.0
+            let blue = CGFloat(rgb & 0xFF) / 255.0
+            self.init(red: red, green: green, blue: blue, alpha: alpha)
         case 8: // RRGGBBAA
-            let r = CGFloat((rgb >> 24) & 0xFF) / 255.0
-            let g = CGFloat((rgb >> 16) & 0xFF) / 255.0
-            let b = CGFloat((rgb >> 8) & 0xFF) / 255.0
-            let a = CGFloat(rgb & 0xFF) / 255.0
-            self.init(red: r, green: g, blue: b, alpha: a)
+            let red = CGFloat((rgb >> 24) & 0xFF) / 255.0
+            let green = CGFloat((rgb >> 16) & 0xFF) / 255.0
+            let blue = CGFloat((rgb >> 8) & 0xFF) / 255.0
+            let newAlpha = CGFloat(rgb & 0xFF) / 255.0
+            self.init(red: red, green: green, blue: blue, alpha: newAlpha)
         default:
             return nil
         }

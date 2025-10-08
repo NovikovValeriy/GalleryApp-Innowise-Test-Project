@@ -14,4 +14,3 @@ enum NetworkError: Error {
     case decodingFailed
     case noData
 }
-

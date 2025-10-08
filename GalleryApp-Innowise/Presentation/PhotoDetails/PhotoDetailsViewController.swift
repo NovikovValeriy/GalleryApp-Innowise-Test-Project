@@ -48,7 +48,6 @@ final class PhotoDetailsViewController: UIViewController {
         return view
     }()
 
-    
     private let imageBackgroundView: UIView = {
         let view = UIView()
         
@@ -147,7 +146,7 @@ final class PhotoDetailsViewController: UIViewController {
             imageBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageBackgroundView.heightAnchor.constraint(equalTo: imageBackgroundView.widthAnchor, multiplier: imageAspectRatio),
+            imageBackgroundView.heightAnchor.constraint(equalTo: imageBackgroundView.widthAnchor, multiplier: imageAspectRatio)
         ])
     }
     
@@ -157,7 +156,7 @@ final class PhotoDetailsViewController: UIViewController {
             imageView.leadingAnchor.constraint(equalTo: imageBackgroundView.leadingAnchor),
             imageView.topAnchor.constraint(equalTo: imageBackgroundView.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor),
+            imageView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor)
         ])
     }
     
@@ -169,7 +168,7 @@ final class PhotoDetailsViewController: UIViewController {
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: PDVCValues.buttonPadding),
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: PDVCValues.buttonPadding),
             backButton.heightAnchor.constraint(equalToConstant: PDVCValues.buttonDimensions),
-            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor),
+            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor)
         ])
     }
     
@@ -183,7 +182,7 @@ final class PhotoDetailsViewController: UIViewController {
             saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.buttonPadding),
             saveButton.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -PDVCValues.buttonPadding),
             saveButton.heightAnchor.constraint(equalToConstant: PDVCValues.buttonDimensions),
-            saveButton.widthAnchor.constraint(equalTo: saveButton.heightAnchor),
+            saveButton.widthAnchor.constraint(equalTo: saveButton.heightAnchor)
         ])
     }
     
@@ -206,7 +205,7 @@ final class PhotoDetailsViewController: UIViewController {
         NSLayoutConstraint.activate([
             authorNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: PDVCValues.authorNameLabelHorizontalPadding),
             authorNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PDVCValues.authorNameLabelHorizontalPadding),
-            authorNameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PDVCValues.authorNameLabelTopPadding),
+            authorNameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: PDVCValues.authorNameLabelTopPadding)
         ])
     }
     

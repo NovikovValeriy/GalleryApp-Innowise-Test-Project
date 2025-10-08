@@ -8,7 +8,6 @@
 import UIKit
 import CHTCollectionViewWaterfallLayout
 
-
 enum GAWaterfallCollectionViewSections: Int {
     case main
 }
@@ -53,14 +52,15 @@ final class GAPhotosWaterfallView: UIView {
         }
     }
     
-    //MARK: - UI Configuration
+    // MARK: - UI Configuration
+    
     private(set) lazy var collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = self.itemRenderDirection
         layout.minimumColumnSpacing = self.columnSpacing
         layout.minimumInteritemSpacing = self.interitemSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotosWaterfallCollectionViewCell.self, forCellWithReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier)
+        collectionView.register(WaterfallCollectionViewCell.self, forCellWithReuseIdentifier: WaterfallCollectionViewCell.identifier)
         collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
@@ -82,7 +82,7 @@ final class GAPhotosWaterfallView: UIView {
         collectionViewConfig()
     }
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)

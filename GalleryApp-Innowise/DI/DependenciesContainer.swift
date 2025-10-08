@@ -12,12 +12,14 @@ final class DependenciesContainer {
     static let shared = DependenciesContainer()
     private let assembler: Assembler
     
-    func inject<T>() throws -> T {
-        if let container = assembler.resolver.resolve(T.self) {
-            return container
-        } else {
-            throw NSError()
-        }
+    func inject<T>() throws -> T? {
+//        if let container = assembler.resolver.resolve(T.self) {
+//            return container
+//        } else {
+//            throw NSError()
+//        }
+        let container = assembler.resolver.resolve(T.self)
+        return container
     }
     
     private init() {

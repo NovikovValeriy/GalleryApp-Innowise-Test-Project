@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum PhotosWaterfallCollectionViewCellValues {
+enum WaterfallCollectionViewCellValues {
     static let imageCornerRadius: CGFloat = 20
     static let labelFontSize: CGFloat = 12
     static let labelHeightFromFontMultiplier: CGFloat = 2
@@ -23,8 +23,8 @@ enum PhotosWaterfallCollectionViewCellValues {
 }
 
 final class WaterfallCollectionViewCell: UICollectionViewCell {
-    typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
-    static let identifier = "PhotosWaterfallCollectionViewCell"
+    typealias WCVCValues = WaterfallCollectionViewCellValues
+    static let identifier = "WaterfallCollectionViewCell"
     
     private var viewModel: WaterfallCollectionViewCellViewModel?
     
@@ -41,7 +41,7 @@ final class WaterfallCollectionViewCell: UICollectionViewCell {
     private let imageBackgroundView: UIView = {
         let view = UIView()
         
-        view.layer.cornerRadius = PWCVCValues.imageCornerRadius
+        view.layer.cornerRadius = WCVCValues.imageCornerRadius
         view.layer.masksToBounds = true
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ final class WaterfallCollectionViewCell: UICollectionViewCell {
     private let label: UILabel = {
         let label = UILabel()
         
-        label.font = .systemFont(ofSize: PWCVCValues.labelFontSize, weight: .semibold)
+        label.font = .systemFont(ofSize: WCVCValues.labelFontSize, weight: .semibold)
         label.textColor = .label
         label.text = " "
         
@@ -113,20 +113,20 @@ final class WaterfallCollectionViewCell: UICollectionViewCell {
         heartView.isHidden = true
 
         NSLayoutConstraint.activate([
-            heartView.widthAnchor.constraint(equalToConstant: PWCVCValues.heartButtonWidth),
+            heartView.widthAnchor.constraint(equalToConstant: WCVCValues.heartButtonWidth),
             heartView.heightAnchor.constraint(equalTo: heartView.widthAnchor),
-            heartView.trailingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor, constant: -PWCVCValues.heartButtonPadding),
-            heartView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -PWCVCValues.heartButtonPadding)
+            heartView.trailingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor, constant: -WCVCValues.heartButtonPadding),
+            heartView.bottomAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: -WCVCValues.heartButtonPadding)
         ])
     }
     
     private func labelConfiguration() {
         contentView.addSubview(label)
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: PWCVCValues.titlePadding),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -PWCVCValues.titlePadding),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -PWCVCValues.titlePadding),
-            label.topAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: PWCVCValues.titlePadding)
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: WCVCValues.titlePadding),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -WCVCValues.titlePadding),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -WCVCValues.titlePadding),
+            label.topAnchor.constraint(equalTo: imageBackgroundView.bottomAnchor, constant: WCVCValues.titlePadding)
         ])
     }
     

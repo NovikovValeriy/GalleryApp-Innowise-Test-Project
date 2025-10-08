@@ -61,7 +61,7 @@ final class FeedPhotosViewModelImpl: FeedPhotosViewModel {
                     }
                 }
                 self.photos.append(contentsOf: uniquePhotos)
-                self.page = self.page + 1
+                self.page += 1
                 self.onFeedPhotosUpdated?()
             case .failure(let error):
                 let message = self.errorMapper.map(error)

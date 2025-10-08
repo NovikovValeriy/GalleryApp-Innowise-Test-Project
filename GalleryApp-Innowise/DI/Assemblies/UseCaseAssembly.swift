@@ -5,38 +5,37 @@
 //  Created by Валерий Новиков on 8.10.25.
 //
 
-
 import Swinject
 
 final class UseCaseAssembly: Assembly {
     func assemble(container: Container) {
-        container.register(GetFeedPhotosUseCase.self) { r in
-            let photoRepository = r.resolve(PhotoRepository.self)!
+        container.register(GetFeedPhotosUseCase.self) { resolver in
+            let photoRepository = resolver.resolve(PhotoRepository.self)!
             return GetFeedPhotosUseCaseImpl(repository: photoRepository)
         }.inObjectScope(.transient)
         
-        container.register(DownloadPhotoUseCase.self) { r in
-            let photoRepository = r.resolve(PhotoRepository.self)!
+        container.register(DownloadPhotoUseCase.self) { resolver in
+            let photoRepository = resolver.resolve(PhotoRepository.self)!
             return DownloadPhotoUseCaseImpl(repository: photoRepository)
         }.inObjectScope(.transient)
         
-        container.register(GetSavedPhotosUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+        container.register(GetSavedPhotosUseCase.self) { resolver in
+            let savedPhotoRepository = resolver.resolve(SavedPhotoRepository.self)!
             return GetSavedPhotosUseCaseImpl(repository: savedPhotoRepository)
         }.inObjectScope(.transient)
         
-        container.register(SavePhotoUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+        container.register(SavePhotoUseCase.self) { resolver in
+            let savedPhotoRepository = resolver.resolve(SavedPhotoRepository.self)!
             return SavePhotoUseCaseImpl(repository: savedPhotoRepository)
         }.inObjectScope(.transient)
         
-        container.register(DeletePhotoUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+        container.register(DeletePhotoUseCase.self) { resolver in
+            let savedPhotoRepository = resolver.resolve(SavedPhotoRepository.self)!
             return DeletePhotoUseCaseImpl(repository: savedPhotoRepository)
         }.inObjectScope(.transient)
         
-        container.register(IsPhotoSavedUseCase.self) { r in
-            let savedPhotoRepository = r.resolve(SavedPhotoRepository.self)!
+        container.register(IsPhotoSavedUseCase.self) { resolver in
+            let savedPhotoRepository = resolver.resolve(SavedPhotoRepository.self)!
             return IsPhotoSavedUseCaseImpl(repository: savedPhotoRepository)
         }.inObjectScope(.transient)
     }

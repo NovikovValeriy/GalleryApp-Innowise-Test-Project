@@ -37,11 +37,10 @@ final class UnsplashAPIDataSource {
         ]
         
         guard let url = comp.url else {
-            completion(.failure(.invalidURL));
+            completion(.failure(.invalidURL))
             return
         }
         let req = self.makeURLRequest(url: url)
-        
         
         let task = self.session.dataTask(with: req) { data, response, error in
             if let error = error {
@@ -69,7 +68,9 @@ final class UnsplashAPIDataSource {
             }
             
             do {
-                let decodedData = try JSONDecoder().decode([PhotoDTO].self, from: data)
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let decodedData = try decoder.decode([PhotoDTO].self, from: data)
                 completion(.success(decodedData))
             } catch {
                 completion(.failure(.decodingFailed))

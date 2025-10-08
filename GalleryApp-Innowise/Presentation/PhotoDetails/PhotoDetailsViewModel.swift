@@ -70,7 +70,7 @@ final class PhotoDetailsViewModelImpl: PhotoDetailsViewModel {
             switch result {
             case .success(let data):
                 self.onDownloadPhoto?(data)
-            case .failure(_):
+            case .failure:
                 return
             }
         }

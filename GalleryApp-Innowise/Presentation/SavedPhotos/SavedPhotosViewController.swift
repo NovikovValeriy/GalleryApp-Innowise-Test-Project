@@ -17,7 +17,7 @@ enum SavedPhotosValues {
 
 final class SavedPhotosViewController: UIViewController {
     
-    typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
+    typealias WCVCValues = WaterfallCollectionViewCellValues
     typealias SPValues = SavedPhotosValues
     
     private var dataSource: UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo>!
@@ -111,10 +111,10 @@ final class SavedPhotosViewController: UIViewController {
     private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo> {
         return UICollectionViewDiffableDataSource(
             collectionView: self.photosWaterfallView.collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, model in
+            cellProvider: { [weak self] collectionView, indexPath, _ in
             guard let self = self,
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier, for: indexPath) as? PhotosWaterfallCollectionViewCell else {
-                return PhotosWaterfallCollectionViewCell()
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterfallCollectionViewCell.identifier, for: indexPath) as? WaterfallCollectionViewCell else {
+                return WaterfallCollectionViewCell()
             }
             
             let photo = self.viewModel.photos[indexPath.row]
@@ -122,12 +122,12 @@ final class SavedPhotosViewController: UIViewController {
             if cell.hasViewModel {
                 cell.configure(photo: photo, index: indexPath.row)
             } else {
-                guard let vm: PhotosWaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
-                    return PhotosWaterfallCollectionViewCell()
+                guard let viewModel: WaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
+                    return WaterfallCollectionViewCell()
                 }
-                vm.onPhotoPressed = self.viewModel.onPhotoPressed
-                vm.onError = self.viewModel.onError
-                cell.configure(with: vm, photo: photo, index: indexPath.row)
+                viewModel.onPhotoPressed = self.viewModel.onPhotoPressed
+                viewModel.onError = self.viewModel.onError
+                cell.configure(with: viewModel, photo: photo, index: indexPath.row)
             }
             
             return cell
@@ -161,10 +161,6 @@ final class SavedPhotosViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     init(viewModel: SavedPhotosViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -195,10 +191,10 @@ extension SavedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         
         let estimatedImageWidth = (viewWidth / columnCount) - SPValues.columnSpacing * (columnCount - 1)
         
-        imageHeight = imageHeight * (estimatedImageWidth / imageWidth)
+        imageHeight *= estimatedImageWidth / imageWidth
         imageWidth = estimatedImageWidth
         
-        let cellHeight = imageHeight + PWCVCValues.labelFontSize + PWCVCValues.titlePadding * 2
+        let cellHeight = imageHeight + WCVCValues.labelFontSize + WCVCValues.titlePadding * 2
                 
         return CGSize(width: imageWidth, height: cellHeight)
     }
@@ -207,7 +203,7 @@ extension SavedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         guard let layout = collectionViewLayout as? CHTCollectionViewWaterfallLayout else {
             return 0
         }
-        if self.view.frame.size.width / self.view.frame.size.height > 2  {
+        if self.view.frame.size.width / self.view.frame.size.height > 2 {
             layout.columnCount = SPValues.extendedColumnsCount
         } else {
             layout.columnCount = SPValues.narrowColumnsCount

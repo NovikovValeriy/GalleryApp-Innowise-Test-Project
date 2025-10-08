@@ -17,7 +17,7 @@ enum FeedPhotosValues {
 
 final class FeedPhotosViewController: UIViewController {
     
-    typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
+    typealias WCVCValues = WaterfallCollectionViewCellValues
     typealias FPValues = FeedPhotosValues
     
     private var dataSource: UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo>!
@@ -40,7 +40,6 @@ final class FeedPhotosViewController: UIViewController {
         photosWaterfallView.delegate = self
         
         view.addSubview(photosWaterfallView)
-        
         
         NSLayoutConstraint.activate([
             photosWaterfallView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -72,7 +71,8 @@ final class FeedPhotosViewController: UIViewController {
         
         self.viewModel.onSavedPhotosUpdated = { [weak self] in
             DispatchQueue.main.async {
-                guard let cellsToCheck = (self?.photosWaterfallView.collectionView.visibleCells as? [PhotosWaterfallCollectionViewCell]) else { return }
+                guard let cellsToCheck = (self?.photosWaterfallView.collectionView.visibleCells as? [WaterfallCollectionViewCell])
+                else { return }
                 for cell in cellsToCheck {
                     guard let photo = cell.photo else { continue }
                     let markedAsSaved = self?.viewModel.savedPhotos.firstIndex(of: photo) != nil
@@ -99,10 +99,10 @@ final class FeedPhotosViewController: UIViewController {
     private func configureDiffableDataSource() -> UICollectionViewDiffableDataSource<GAWaterfallCollectionViewSections, Photo> {
         return UICollectionViewDiffableDataSource(
             collectionView: self.photosWaterfallView.collectionView,
-            cellProvider: { [weak self] collectionView, indexPath, model in
+            cellProvider: { [weak self] collectionView, indexPath, _ in
             guard let self = self,
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosWaterfallCollectionViewCell.identifier, for: indexPath) as? PhotosWaterfallCollectionViewCell else {
-                return PhotosWaterfallCollectionViewCell()
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterfallCollectionViewCell.identifier, for: indexPath) as? WaterfallCollectionViewCell else {
+                return WaterfallCollectionViewCell()
             }
             
             let photo = self.viewModel.photos[indexPath.row]
@@ -110,12 +110,12 @@ final class FeedPhotosViewController: UIViewController {
             if cell.hasViewModel {
                 cell.configure(photo: photo, index: indexPath.row)
             } else {
-                guard let vm: PhotosWaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
-                    return PhotosWaterfallCollectionViewCell()
+                guard let viewModel: WaterfallCollectionViewCellViewModel = try? DependenciesContainer.shared.inject() else {
+                    return WaterfallCollectionViewCell()
                 }
-                vm.onPhotoPressed = self.viewModel.onPhotoPressed
-                vm.onError = self.viewModel.onError
-                cell.configure(with: vm, photo: photo, index: indexPath.row)
+                viewModel.onPhotoPressed = self.viewModel.onPhotoPressed
+                viewModel.onError = self.viewModel.onError
+                cell.configure(with: viewModel, photo: photo, index: indexPath.row)
             }
             
             let markedAsSaved = self.viewModel.savedPhotos.firstIndex(of: photo) != nil
@@ -184,10 +184,10 @@ extension FeedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         
         let estimatedImageWidth = (viewWidth / columnCount) - FPValues.columnSpacing * (columnCount - 1)
         
-        imageHeight = imageHeight * (estimatedImageWidth / imageWidth)
+        imageHeight *= (estimatedImageWidth / imageWidth)
         imageWidth = estimatedImageWidth
         
-        let cellHeight = imageHeight + PWCVCValues.labelFontSize + PWCVCValues.titlePadding * 2
+        let cellHeight = imageHeight + WCVCValues.labelFontSize + WCVCValues.titlePadding * 2
                 
         return CGSize(width: imageWidth, height: cellHeight)
     }
@@ -196,7 +196,7 @@ extension FeedPhotosViewController: CHTCollectionViewDelegateWaterfallLayout {
         guard let layout = collectionViewLayout as? CHTCollectionViewWaterfallLayout else {
             return 0
         }
-        if self.view.frame.size.width / self.view.frame.size.height > 2  {
+        if self.view.frame.size.width / self.view.frame.size.height > 2 {
             layout.columnCount = FPValues.extendedColumnsCount
         } else {
             layout.columnCount = FPValues.narrowColumnsCount

@@ -11,7 +11,7 @@ struct PhotoDTO: Decodable {
     let height: Int?
     let color: String?
     let description: String?
-    let alt_description: String?
+    let altDescription: String?
     let urls: PhotoUrlsDTO?
     let user: UserDTO?
     
@@ -22,7 +22,7 @@ struct PhotoDTO: Decodable {
             height: height ?? 100,
             averageColor: color ?? "#000000",
             descriptionText: description,
-            altDescription: alt_description,
+            altDescription: altDescription,
             thumbnailUrl: urls?.small ?? "",
             fullUrl: urls?.regular ?? "",
             authorName: user?.name ?? "",

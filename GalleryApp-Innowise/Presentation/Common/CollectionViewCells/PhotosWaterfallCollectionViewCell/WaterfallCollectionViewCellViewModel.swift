@@ -20,7 +20,7 @@ protocol WaterfallCollectionViewCellViewModel: AnyObject {
     func downloadPhoto()
 }
 
-final class PhotosWaterfallCollectionViewCellViewModelImpl: WaterfallCollectionViewCellViewModel {
+final class WaterfallCollectionViewCellViewModelImpl: WaterfallCollectionViewCellViewModel {
     private let downloadPhotoUseCase: DownloadPhotoUseCase
     private let errorMapper: ErrorMapper
     

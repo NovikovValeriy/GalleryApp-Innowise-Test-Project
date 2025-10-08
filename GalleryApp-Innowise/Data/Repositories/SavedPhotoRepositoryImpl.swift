@@ -5,7 +5,6 @@
 //  Created by Валерий Новиков on 7.10.25.
 //
 
-
 import CoreData
 
 final class SavedPhotoRepositoryImpl: SavedPhotoRepository {
