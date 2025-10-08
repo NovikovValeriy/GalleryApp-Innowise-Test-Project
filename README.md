@@ -105,5 +105,8 @@ Key points:
 - The Unsplash API key is already included in the project for testing purposes. No additional configuration or environment file is required.
 
 ---
-
+## Contact information
+- Email: novikov.valera2005@gmail.com
+- Telegram: @bdkrstk
+- LinkedIn: http://linkedin.com/in/valery-novikau-0538ab348
 
