@@ -1,5 +1,5 @@
 //
-//  PhotosWaterfallCollectionViewCell.swift
+//  WaterfallCollectionViewCell.swift
 //  GalleryApp-Innowise
 //
 //  Created by Валерий Новиков on 1.10.25.
@@ -22,11 +22,11 @@ enum PhotosWaterfallCollectionViewCellValues {
     }
 }
 
-final class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
+final class WaterfallCollectionViewCell: UICollectionViewCell {
     typealias PWCVCValues = PhotosWaterfallCollectionViewCellValues
     static let identifier = "PhotosWaterfallCollectionViewCell"
     
-    private var viewModel: PhotosWaterfallCollectionViewCellViewModel?
+    private var viewModel: WaterfallCollectionViewCellViewModel?
     
     var hasViewModel: Bool {
         return self.viewModel != nil
@@ -83,8 +83,6 @@ final class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         
         return imageView
     }()
-
-
     
     // MARK: - UI Configuration
     
@@ -173,7 +171,7 @@ final class PhotosWaterfallCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(with viewModel: PhotosWaterfallCollectionViewCellViewModel? = nil, photo: Photo, index: Int) {
+    func configure(with viewModel: WaterfallCollectionViewCellViewModel? = nil, photo: Photo, index: Int) {
         if let viewModel = viewModel {
             self.viewModel = viewModel
             self.bindViewModel()

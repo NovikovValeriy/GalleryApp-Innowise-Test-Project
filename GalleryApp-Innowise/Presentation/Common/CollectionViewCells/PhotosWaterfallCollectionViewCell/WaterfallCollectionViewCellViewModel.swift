@@ -1,5 +1,5 @@
 //
-//  PhotosWaterfallCollectionViewCellViewModel.swift
+//  WaterfallCollectionViewCellViewModel.swift
 //  GalleryApp-Innowise
 //
 //  Created by Валерий Новиков on 5.10.25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
+protocol WaterfallCollectionViewCellViewModel: AnyObject {
     var photo: Photo? { get set }
     var photoIndex: Int? { get set }
     var photoIdentifier: String { get }
@@ -20,7 +20,7 @@ protocol PhotosWaterfallCollectionViewCellViewModel: AnyObject {
     func downloadPhoto()
 }
 
-final class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallCollectionViewCellViewModel {
+final class PhotosWaterfallCollectionViewCellViewModelImpl: WaterfallCollectionViewCellViewModel {
     private let downloadPhotoUseCase: DownloadPhotoUseCase
     private let errorMapper: ErrorMapper
     
@@ -53,7 +53,7 @@ final class PhotosWaterfallCollectionViewCellViewModelImpl: PhotosWaterfallColle
             switch result {
             case .success(let data):
                 self.onDowloadPhoto?(data)
-            case .failure(_):
+            case .failure:
                 return
             }
         }
